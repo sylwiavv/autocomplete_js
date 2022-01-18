@@ -1,0 +1,47 @@
+@import 'scss/reset';
+@import "scss/fonts";
+
+.input__autocomplete {
+  display: flex;
+  align-self: flex-start;
+  text-align: start;
+  padding: 4px 16px;
+  height: 48px;
+  width: 100%;
+}
+
+.input__autocomplete::placeholder {
+  text-align: start;
+}
+
+.result-list__autocomplete {
+  background-color: #f1e3e345;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.result-list__autocomplete li:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.selected-item__autocomplete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #070725;
+  padding: 8px 8px 8px 16px;
+  border-radius: 4px;
+  max-width: 240px;
+  width: auto;
+  margin: 4px;
+}
+
+.selected-item__autocomplete .close-icon {
+  display: flex;
+  background-image: url(./assets/icons/icon__close.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px;
+  width: 30px;
+  height: 30px;
+}

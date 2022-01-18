@@ -1,0 +1,22 @@
+// Variables
+$main-font: 'Montserrat', sans-serif;
+
+// Font weights
+$font-weight__light: 300;
+$font-weight__regular: 400;
+$font-weight__heavier: 500;
+$font-weight__semibold: 600;
+$font-weight__bold: 700;
+
+// Font sizes
+$font-size__base: 16px;
+
+$font-size__xs: 8px;
+$font-size__s: $font-size__base;
+$font-size__m: 18px;
+$font-size__l: 24px;
+$font-size__xl: 30px;
+
+body {
+    font-family: $main-font;
+}
