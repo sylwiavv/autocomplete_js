@@ -33,17 +33,9 @@ const searchFunction = (inputElement, arrElement) => {
         const elements = document.querySelectorAll('.result-item__autocomplete');
         elements.forEach(element => {
             element.addEventListener('click', (e)=> {
-                const span = document.createElement('span');
-                span.classList.add('close-icon');
-
                 const clickedElement = element.innerHTML;
                 selectedItemsArray.push(clickedElement);
-                renderElement(clickedElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
-                const resultItemsAutoComplete = document.querySelectorAll('.selected-item__autocomplete');
-                resultItemsAutoComplete.forEach(element => {
-                    console.log(resultItemsAutoComplete)
-                    element.appendChild(span);
-                });
+                renderSelectedElement(clickedElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
             })
         })
     });
@@ -55,6 +47,17 @@ inputAutoComplete.addEventListener("keyup", function(event) {
 
     }
 });
+
+const renderSelectedElement = (arrElement, liElementClass, ulElementClass) => {
+    renderElement(arrElement, liElementClass, ulElementClass);
+    const span = document.createElement('span');
+    span.classList.add('close-icon');
+    const resultItemsAutoComplete = document.querySelectorAll('.selected-item__autocomplete');
+    resultItemsAutoComplete.forEach(element => {
+        console.log(resultItemsAutoComplete)
+        element.appendChild(span);
+    });
+}
 
 const renderElement = (arrElement, liElementClass, ulElementClass) => {
     const fragment = document.createDocumentFragment();
