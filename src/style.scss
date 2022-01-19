@@ -54,6 +54,12 @@
   background-size: 24px;
   width: 30px;
   height: 30px;
+
+  &:focus,
+  &:hover {
+    cursor: pointer;
+    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+  }
 }
 
 h1 {

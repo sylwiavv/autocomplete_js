@@ -1,17 +1,13 @@
 import "./style.scss";
 
 const inputAutoComplete = document.querySelector('#input');
-const text = document.querySelector('.text');
 const resultListAutoComplete = document.querySelector('.result-list__autocomplete');
 const selectedListAutoComplete = document.querySelector('.selected-list__autocomplete');
-// const resultItemsAutoComplete = document.querySelectorAll('.result-item__autocomplete');
-const selectedItemsAutoComplete = document.querySelectorAll('.selected-item__autocomplete');
-const closeIcon = document.querySelectorAll('.close-icon');
 let newArray = [];
 let selectedItemsArray = [];
 
 const technologies = [
-    'Java Script', 'React', 'Next.js', 'HTML', 'scs', 'less', 'Vue', 'Vanilla'
+    'Java Script', 'React', 'Next.js', 'HTML', 'scss', 'less', 'sass', 'Vue', 'Vanilla', 'Typescript', 'Angular', 'Python', 'Java', 'Go', 'Ruby', 'C++', 'C#'
 ];
 
 const searchFunction = (inputElement, arrElement) => {
@@ -46,10 +42,27 @@ const searchFunction = (inputElement, arrElement) => {
     });
 }
 
+// Remove element from selected list
+selectedListAutoComplete.addEventListener("click", function(e) {
+    console.log(e);
+    if (e.target && e.target.matches("span.close-icon")) {
+        const parentValue = e.target.parentNode.innerText;
+        const index = selectedItemsArray.indexOf(parentValue);
+        if (index > -1) {
+            selectedItemsArray.splice(index, 1);
+        }
+        selectedListAutoComplete.textContent = '';
+        selectedItemsArray.forEach(selectedArrElement => {
+            renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        });
+    }
+});
+
+
+
 //TODO
 inputAutoComplete.addEventListener("keyup", function(event) {
     if (event.keyCode === 13) {
-
     }
 });
 
@@ -73,6 +86,5 @@ const renderElement = (arrElement, liElementClass, ulElementClass) => {
     fragment.appendChild(li);
     ul.appendChild(fragment);
 }
-
 
 searchFunction();
