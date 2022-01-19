@@ -18,6 +18,16 @@
   background-color: #f1e3e345;
   padding: 16px;
   margin-bottom: 16px;
+
+  .result-item__autocomplete {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.result-item__autocomplete {
+  cursor: pointer;
 }
 
 .result-list__autocomplete li:not(:last-child) {

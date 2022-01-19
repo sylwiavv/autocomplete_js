@@ -3,6 +3,7 @@ import "./style.scss";
 const inputAutoComplete = document.querySelector('#input');
 const text = document.querySelector('.text');
 const resultListAutoComplete = document.querySelector('.result-list__autocomplete');
+const selectedListAutoComplete = document.querySelector('.selected-list__autocomplete');
 // const resultItemsAutoComplete = document.querySelectorAll('.result-item__autocomplete');
 const selectedItemsAutoComplete = document.querySelectorAll('.selected-item__autocomplete');
 const closeIcon = document.querySelectorAll('.close-icon');
@@ -32,10 +33,14 @@ const searchFunction = (inputElement, arrElement) => {
 
         const elements = document.querySelectorAll('.result-item__autocomplete');
         elements.forEach(element => {
-            element.addEventListener('click', (e)=> {
+            element.addEventListener('click', (e) => {
                 const clickedElement = element.innerHTML;
-                selectedItemsArray.push(clickedElement);
-                renderSelectedElement(clickedElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
+                const array = selectedItemsArray.filter(selectedElement => selectedElement === clickedElement);
+                array.length === 0 ? selectedItemsArray.push(clickedElement) : console.log('Element exist');
+                selectedListAutoComplete.textContent = '';
+                selectedItemsArray.forEach(selectedArrElement => {
+                    renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
+                });
             })
         })
     });
@@ -54,7 +59,6 @@ const renderSelectedElement = (arrElement, liElementClass, ulElementClass) => {
     span.classList.add('close-icon');
     const resultItemsAutoComplete = document.querySelectorAll('.selected-item__autocomplete');
     resultItemsAutoComplete.forEach(element => {
-        console.log(resultItemsAutoComplete)
         element.appendChild(span);
     });
 }
