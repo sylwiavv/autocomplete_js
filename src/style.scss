@@ -27,7 +27,9 @@
 }
 
 .result-item__autocomplete {
+  border-radius: 4px;
   cursor: pointer;
+  padding: 4px 8px;
 }
 
 .result-list__autocomplete li:not(:last-child) {
@@ -76,4 +78,14 @@ h1,
 input {
   border-radius: 4px;
   width: 100%;
+}
+
+.result-item__autocomplete {
+  &.selected {
+    background: gold;
+  }
+
+  &.not-selected {
+    background-color: red;
+  }
 }
