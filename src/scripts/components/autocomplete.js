@@ -58,44 +58,53 @@ selectedListAutoComplete.addEventListener("click", function(e) {
 });
 
 let index = 0;
-let indexOfActualElement;
 
 inputAutoComplete.addEventListener("keydown", function (e) {
     const allLi = document.querySelectorAll('.result-item__autocomplete');
     const liElementsLength = allLi.length;
-    // Dodajemy elementy do array
-    let indexElementu = Array.prototype.slice.call(resultListAutoComplete.children);
-    let actualElement = allLi.item(index);
-    indexOfActualElement = indexElementu.indexOf(actualElement) + 1;
-    let getPreviousElement = allLi[index-1];
-    console.log('to jest index ' + index);
-    console.log('CHAR: ' + e.key);
-    console.log('CHAR len: ' + e.key.length);
+    let getPreviousElement;
+    let getActualElement;
 
+    //arrow down
     if (e.keyCode === 40 && liElementsLength > 0) {
         index++;
-        console.log(indexOfActualElement + ' to jest aktualny');
-        console.log(index + ' to jest sztuczny');
-        console.log(liElementsLength + ' dlugosc tablicy');
-        if (index === indexOfActualElement) {
-            actualElement.classList.add('selected');
-            if (indexOfActualElement > 1) {
+        getPreviousElement = allLi[index-2];
+        getActualElement = allLi[index-1];
+
+        if (index <= liElementsLength) {
+            getActualElement.classList.add('selected');
+            if (index > 1) {
                 getPreviousElement.classList.remove('selected');
             }
         } else {
-            console.log(index === indexOfActualElement);
-            console.log('koniec')
-            console.log(index);
-            console.log(allLi[liElementsLength - 1]);
             allLi[liElementsLength - 1].classList.remove('selected')
             allLi[0].classList.add('selected');
             index = 1;
         }
-        //} else if (e && /[a-zA-Z0-9-_ ]/.test(inp)) {
-    } else if (e && e.key.length === 1 || e.keyCode === 8) {
-        console.log('Inny klawisz')
+    }     // arrow up
+    if (e.keyCode === 38 && liElementsLength > 0) {
+        console.log('up');
+        index--;
+        console.log(index)
+        getPreviousElement = allLi[index];
+        getActualElement = allLi[index-1];
+
+        if (index > 0) {
+            getActualElement.classList.add('selected');
+            // if (index > 1) {
+                getPreviousElement.classList.remove('selected');
+            // }
+        } else {
+            allLi[0].classList.remove('selected')
+            allLi[liElementsLength - 1].classList.add('selected');
+            index = liElementsLength;
+        }
+    }
+    else if (e && e.key.length === 1 || e.keyCode === 8) {
         index = 0;
     }
+
+
 })
 
 //TODO
