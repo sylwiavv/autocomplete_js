@@ -1,4 +1,4 @@
-import { escapeRegExp } from '../helpers/helpers.js';
+import { escapeRegExp, moveCursorToEnd } from '../helpers/helpers.js';
 
 const inputAutoComplete = document.querySelector('#input');
 const resultListAutoComplete = document.querySelector('.result-list__autocomplete');
@@ -88,6 +88,7 @@ inputAutoComplete.addEventListener("keydown", function (e) {
     }     // arrow up
     if (e.keyCode === 38 && liElementsLength > 0) {
         console.log('up');
+        moveCursorToEnd(e, inputAutoComplete);
         index--;
         console.log(index)
         getPreviousElement = allLi[index];
@@ -146,5 +147,10 @@ const renderElement = (arrElement, liElementClass, ulElementClass) => {
     fragment.appendChild(li);
     ul.appendChild(fragment);
 }
+
+//Clear input placeholder if I click
+// inputAutoComplete.addEventListener("click", function(e) {
+//     e.target.placeholder = "";
+// });
 
 searchFunction();
