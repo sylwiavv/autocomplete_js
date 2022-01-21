@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start": "webpack serve --mode development --config ./webpack.config.js",
-    "build": "webpack"
+    "build": "webpack",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
