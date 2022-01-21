@@ -13,42 +13,39 @@ const technologies = [
 const searchFunction = (inputElement, arrElement) => {
     inputAutoComplete.addEventListener("input", function (e) {
         const firstElement = inputAutoComplete.value;
+        newArray = [];
         if (firstElement.replace(/\s/g, '') !== "") {
-            newArray = [];
             newArray.push(firstElement);
-            resultListAutoComplete.textContent = '';
-
-            technologies.forEach((technology) => {
-                inputElement = e.target.value.toLowerCase();
-                arrElement = technology.toLowerCase();
-                let matchesWord = arrElement.match(escapeRegExp(inputElement));
-                if (matchesWord !== null && inputElement !== '') {
-                    newArray.push(technology);
-                }
-            });
-
-            newArray.forEach(arrElement => {
-                renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
-            });
-
-            const elements = document.querySelectorAll('.result-item__autocomplete');
-            // console.log(elements[0].textContent.length);
-            if (elements[0].textContent.length > 0) {
-                elements[0].classList.add('selected');
-            }
-
-            elements.forEach(element => {
-                element.addEventListener('click', (e) => {
-                    const clickedElement = element.innerHTML;
-                    const array = selectedItemsArray.filter(selectedElement => selectedElement === clickedElement);
-                    array.length === 0 ? selectedItemsArray.push(clickedElement) : console.log('Element exist');
-                    selectedListAutoComplete.textContent = '';
-                    selectedItemsArray.forEach(selectedArrElement => {
-                        renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
-                    });
-                })
-            })
         }
+        resultListAutoComplete.textContent = '';
+        technologies.forEach((technology) => {
+            inputElement = e.target.value.toLowerCase().replace(/\s/g, '');
+            arrElement = technology.toLowerCase().replace(/\s/g, '');
+            let matchesWord = arrElement.match(escapeRegExp(inputElement));
+            if (matchesWord !== null && inputElement !== '') {
+                newArray.push(technology);
+            }
+        });
+        newArray.forEach(arrElement => {
+            renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
+        });
+
+        const elements = document.querySelectorAll('.result-item__autocomplete');
+        // console.log(elements[0].textContent.length);
+        if (elements[0]) {
+            elements[0].classList.add('selected');
+        }
+        elements.forEach(element => {
+            element.addEventListener('click', (e) => {
+                const clickedElement = element.innerHTML;
+                const array = selectedItemsArray.filter(selectedElement => selectedElement === clickedElement);
+                array.length === 0 ? selectedItemsArray.push(clickedElement) : console.log('Element exist');
+                selectedListAutoComplete.textContent = '';
+                selectedItemsArray.forEach(selectedArrElement => {
+                    renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
+                });
+            })
+        })
     });
 }
 
