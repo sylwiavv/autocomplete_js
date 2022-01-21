@@ -70,10 +70,6 @@ inputAutoComplete.addEventListener("keydown", function (e) {
         index++;
         getPreviousElement = allLi[index-2];
         getActualElement = allLi[index-1];
-        let getTextContentActualElement = getActualElement;
-        if (getTextContentActualElement) {
-            inputAutoComplete.value = getTextContentActualElement.textContent;
-        }
 
         if (index <= liElementsLength) {
             getActualElement.classList.add('selected');
@@ -94,10 +90,6 @@ inputAutoComplete.addEventListener("keydown", function (e) {
         getPreviousElement = allLi[index];
         getActualElement = allLi[index-1];
 
-        let getTextContentActualElement = getActualElement;
-        if (getTextContentActualElement) {
-            inputAutoComplete.value = getTextContentActualElement.textContent;
-        }
         if (index > 0) {
             getActualElement.classList.add('selected');
             getPreviousElement.classList.remove('selected');
@@ -118,13 +110,14 @@ inputAutoComplete.addEventListener("keydown", function (e) {
         selectedItemsArray.forEach(selectedArrElement => {
             renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
         });
-        // selectedItemsArray = [];
     }
 
     else if (e && e.key.length === 1 || e.keyCode === 8) {
         index = 0;
     }
 
+    const selectedElement = document.querySelector('.selected');
+    selectedElement ? inputAutoComplete.value = selectedElement.textContent : null;
 });
 
 const renderSelectedElement = (arrElement, liElementClass, ulElementClass) => {
