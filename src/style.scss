@@ -18,6 +18,8 @@
   background-color: #b7b7b745;
   margin-bottom: 16px;
   transition: .8s ease;
+  max-height: 200px;
+  overflow: scroll;
 
   .result-item__autocomplete {
     &:hover {
@@ -86,6 +88,9 @@ h1,
 
 .result-item__autocomplete {
   transition: background-color, .2s;
+  min-height: 40px;
+  position: relative;
+
   &:before {
     content: '';
     opacity: 0;

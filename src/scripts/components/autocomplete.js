@@ -12,43 +12,55 @@ const technologies = [
 
 const searchFunction = (inputElement, arrElement) => {
     inputAutoComplete.addEventListener("input", function (e) {
-        newArray = [];
-        const firstElement = inputAutoComplete.value
-        newArray.push(firstElement);
-        resultListAutoComplete.textContent = '';
-        technologies.forEach((technology) => {
-            inputElement = e.target.value.toLowerCase();
-            arrElement = technology.toLowerCase();
-            let matchesWord = arrElement.match(escapeRegExp(inputElement));
-            if (matchesWord !== null && inputElement !== '') {
-                newArray.push(technology);
+        const firstElement = inputAutoComplete.value;
+        if (firstElement.replace(/\s/g, '') !== "") {
+            newArray = [];
+            newArray.push(firstElement);
+            resultListAutoComplete.textContent = '';
+
+            technologies.forEach((technology) => {
+                inputElement = e.target.value.toLowerCase();
+                arrElement = technology.toLowerCase();
+                let matchesWord = arrElement.match(escapeRegExp(inputElement));
+                if (matchesWord !== null && inputElement !== '') {
+                    newArray.push(technology);
+                }
+            });
+
+            newArray.forEach(arrElement => {
+                renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
+            });
+
+            const elements = document.querySelectorAll('.result-item__autocomplete');
+            // console.log(elements[0].textContent.length);
+            if (elements[0].textContent.length > 0) {
+                elements[0].classList.add('selected');
             }
-        });
 
-        newArray.forEach(arrElement => {
-            renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
-        });
-
-        const elements = document.querySelectorAll('.result-item__autocomplete');
-        elements.forEach(element => {
-            element.addEventListener('click', (e) => {
-                const clickedElement = element.innerHTML;
-                const array = selectedItemsArray.filter(selectedElement => selectedElement === clickedElement);
-                array.length === 0 ? selectedItemsArray.push(clickedElement) : console.log('Element exist');
-                selectedListAutoComplete.textContent = '';
-                selectedItemsArray.forEach(selectedArrElement => {
-                    renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
-                });
+            elements.forEach(element => {
+                element.addEventListener('click', (e) => {
+                    const clickedElement = element.innerHTML;
+                    const array = selectedItemsArray.filter(selectedElement => selectedElement === clickedElement);
+                    array.length === 0 ? selectedItemsArray.push(clickedElement) : console.log('Element exist');
+                    selectedListAutoComplete.textContent = '';
+                    selectedItemsArray.forEach(selectedArrElement => {
+                        renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
+                    });
+                })
             })
-        })
+        }
     });
 }
+
 
 // Remove element from selected list
 selectedListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("span.close-icon")) {
-        const parentValue = e.target.parentNode.innerText;
+        const parentValue = e.target.parentNode.textContent;
         const index = selectedItemsArray.indexOf(parentValue);
+        console.log([parentValue]);
+        console.log(index);
+        console.log(e);
         if (index > -1) {
             selectedItemsArray.splice(index, 1);
         }
@@ -66,7 +78,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     const liElementsLength = allLi.length;
     let getPreviousElement;
     let getActualElement;
-    //arrow down
+    // arrow down
     if (e.keyCode === 40 && liElementsLength > 0) {
         index++;
         getPreviousElement = allLi[index - 2];
@@ -82,12 +94,11 @@ inputAutoComplete.addEventListener("keydown", (e) => {
             allLi[0].classList.add('selected');
             index = 1;
         }
-    }     // arrow up
+    }
+    // arrow up
     if (e.keyCode === 38 && liElementsLength > 0) {
-        console.log('up');
         moveCursorToEnd(e, inputAutoComplete);
         index--;
-        console.log(index)
         getPreviousElement = allLi[index];
         getActualElement = allLi[index - 1];
 
@@ -101,39 +112,39 @@ inputAutoComplete.addEventListener("keydown", (e) => {
             index = liElementsLength;
         }
     }
-
-    const selectedElement = document.querySelector('.selected');
-    //todo null
-    selectedElement ? inputAutoComplete.value = selectedElement.textContent : null;
-
+    // esc
     if (e.keyCode === 27) {
         inputAutoComplete.value = "";
         newArray = [];
-        resultListAutoComplete.textContent = '';
+        resultListAutoComplete.textContent = "";
     }
-
     // Enter
     if (e.keyCode === 13) {
         let currentInputValue = inputAutoComplete.value;
-        if (inputAutoComplete.value !== "") {
+        if (currentInputValue.replace(/\s/g, '') !== "") {
             const array = selectedItemsArray.filter(selectedElement => selectedElement === currentInputValue);
-            array.length === 0 ? selectedItemsArray.push(currentInputValue)
-                : console.log('Element exist');
+            array.length === 0 ? selectedItemsArray.push(currentInputValue) : console.log('Element exist');
         }
-        selectedListAutoComplete.textContent = '';
+        selectedListAutoComplete.textContent = "";
         selectedItemsArray.forEach(selectedArrElement => {
             renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
         });
 
         inputAutoComplete.value = "";
         newArray = [];
-        resultListAutoComplete.textContent = '';
+        resultListAutoComplete.textContent = "";
         newArray.forEach(arrElement => {
             renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
         });
-    } else if (e && e.key.length === 1 || e.keyCode === 8) {
-        index = 0;
     }
+    // numbers, letters, special char and backspace
+    if (e && e.key.length === 1 || e.keyCode === 8) {
+        index = 1;
+    }
+
+    const selectedElement = document.querySelector('.selected');
+    //todo null
+    selectedElement ? inputAutoComplete.value = selectedElement.textContent : null;
 });
 
 const renderSelectedElement = (arrElement, liElementClass, ulElementClass) => {
@@ -156,10 +167,5 @@ const renderElement = (arrElement, liElementClass, ulElementClass) => {
     fragment.appendChild(li);
     ul.appendChild(fragment);
 }
-
-//Clear input placeholder if I click
-// inputAutoComplete.addEventListener("click", function(e) {
-//     e.target.placeholder = "";
-// });
 
 searchFunction();
