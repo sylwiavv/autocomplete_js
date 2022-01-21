@@ -70,6 +70,10 @@ inputAutoComplete.addEventListener("keydown", function (e) {
         index++;
         getPreviousElement = allLi[index-2];
         getActualElement = allLi[index-1];
+        let getTextContentActualElement = getActualElement;
+        if (getTextContentActualElement) {
+            inputAutoComplete.value = getTextContentActualElement.textContent;
+        }
 
         if (index <= liElementsLength) {
             getActualElement.classList.add('selected');
@@ -89,36 +93,37 @@ inputAutoComplete.addEventListener("keydown", function (e) {
         getPreviousElement = allLi[index];
         getActualElement = allLi[index-1];
 
+        let getTextContentActualElement = getActualElement;
+        if (getTextContentActualElement) {
+            inputAutoComplete.value = getTextContentActualElement.textContent;
+        }
         if (index > 0) {
             getActualElement.classList.add('selected');
-            // if (index > 1) {
-                getPreviousElement.classList.remove('selected');
-            // }
+            getPreviousElement.classList.remove('selected');
+
         } else {
             allLi[0].classList.remove('selected')
             allLi[liElementsLength - 1].classList.add('selected');
             index = liElementsLength;
         }
     }
-    else if (e && e.key.length === 1 || e.keyCode === 8) {
-        index = 0;
-    }
 
+    if (e.keyCode === 13) {
+        const currentInputValue = inputAutoComplete.value;
+        const array = selectedItemsArray.filter(selectedElement => selectedElement === currentInputValue);
+        array.length === 0 ? selectedItemsArray.push(currentInputValue) : console.log('Element exist');
 
-})
-
-//TODO
-inputAutoComplete.addEventListener("keypress", function(event) {
-    if (event.keyCode === 13) {
-        const inputCurrentValue = inputAutoComplete.value;
-        selectedItemsArray.push(inputCurrentValue);
-        inputAutoComplete.value = "";
-        console.log(selectedItemsArray);
         selectedListAutoComplete.textContent = '';
         selectedItemsArray.forEach(selectedArrElement => {
             renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
         });
+        // selectedItemsArray = [];
     }
+
+    else if (e && e.key.length === 1 || e.keyCode === 8) {
+        index = 0;
+    }
+
 });
 
 const renderSelectedElement = (arrElement, liElementClass, ulElementClass) => {
