@@ -139,6 +139,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
         index = 1;
     }
 
+    // Set input value to selected element
     const selectedElement = document.querySelector('.selected');
     //todo null
     selectedElement ? inputAutoComplete.value = selectedElement.textContent : null;
