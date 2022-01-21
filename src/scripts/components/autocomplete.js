@@ -1,4 +1,4 @@
-import { escapeRegExp, moveCursorToEnd } from '../helpers/helpers.js';
+import {escapeRegExp, moveCursorToEnd} from '../helpers/helpers.js';
 
 const inputAutoComplete = document.querySelector('#input');
 const resultListAutoComplete = document.querySelector('.result-list__autocomplete');
@@ -13,6 +13,8 @@ const technologies = [
 const searchFunction = (inputElement, arrElement) => {
     inputAutoComplete.addEventListener("input", function (e) {
         newArray = [];
+        const firstElement = inputAutoComplete.value
+        newArray.push(firstElement);
         resultListAutoComplete.textContent = '';
         technologies.forEach((technology) => {
             inputElement = e.target.value.toLowerCase();
@@ -43,7 +45,7 @@ const searchFunction = (inputElement, arrElement) => {
 }
 
 // Remove element from selected list
-selectedListAutoComplete.addEventListener("click", function(e) {
+selectedListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("span.close-icon")) {
         const parentValue = e.target.parentNode.innerText;
         const index = selectedItemsArray.indexOf(parentValue);
@@ -59,17 +61,16 @@ selectedListAutoComplete.addEventListener("click", function(e) {
 
 let index = 0;
 
-inputAutoComplete.addEventListener("keydown",  (e) => {
+inputAutoComplete.addEventListener("keydown", (e) => {
     const allLi = document.querySelectorAll('.result-item__autocomplete');
     const liElementsLength = allLi.length;
     let getPreviousElement;
     let getActualElement;
-
     //arrow down
     if (e.keyCode === 40 && liElementsLength > 0) {
         index++;
-        getPreviousElement = allLi[index-2];
-        getActualElement = allLi[index-1];
+        getPreviousElement = allLi[index - 2];
+        getActualElement = allLi[index - 1];
 
         if (index <= liElementsLength) {
             getActualElement.classList.add('selected');
@@ -88,7 +89,7 @@ inputAutoComplete.addEventListener("keydown",  (e) => {
         index--;
         console.log(index)
         getPreviousElement = allLi[index];
-        getActualElement = allLi[index-1];
+        getActualElement = allLi[index - 1];
 
         if (index > 0) {
             getActualElement.classList.add('selected');
@@ -105,6 +106,13 @@ inputAutoComplete.addEventListener("keydown",  (e) => {
     //todo null
     selectedElement ? inputAutoComplete.value = selectedElement.textContent : null;
 
+    if (e.keyCode === 27) {
+        inputAutoComplete.value = "";
+        newArray = [];
+        resultListAutoComplete.textContent = '';
+    }
+
+    // Enter
     if (e.keyCode === 13) {
         let currentInputValue = inputAutoComplete.value;
         if (inputAutoComplete.value !== "") {
@@ -123,8 +131,7 @@ inputAutoComplete.addEventListener("keydown",  (e) => {
         newArray.forEach(arrElement => {
             renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
         });
-    }
-    else if (e && e.key.length === 1 || e.keyCode === 8) {
+    } else if (e && e.key.length === 1 || e.keyCode === 8) {
         index = 0;
     }
 });

@@ -63,16 +63,25 @@
     filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
   }
 }
+h1 {
+  margin-bottom: 16px;
+}
 
 h1,
 .container {
-  padding: 16px;
   width: 100%;
 }
 
 .container {
+  padding: 16px;
   padding-top: 0;
+  margin: auto;
   max-width: 400px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .result-item__autocomplete {
