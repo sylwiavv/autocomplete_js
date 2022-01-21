@@ -59,7 +59,7 @@ selectedListAutoComplete.addEventListener("click", function(e) {
 
 let index = 0;
 
-inputAutoComplete.addEventListener("keydown", function (e) {
+inputAutoComplete.addEventListener("keydown",  (e) => {
     const allLi = document.querySelectorAll('.result-item__autocomplete');
     const liElementsLength = allLi.length;
     let getPreviousElement;
@@ -101,23 +101,32 @@ inputAutoComplete.addEventListener("keydown", function (e) {
         }
     }
 
-    if (e.keyCode === 13) {
-        const currentInputValue = inputAutoComplete.value;
-        const array = selectedItemsArray.filter(selectedElement => selectedElement === currentInputValue);
-        array.length === 0 ? selectedItemsArray.push(currentInputValue) : console.log('Element exist');
+    const selectedElement = document.querySelector('.selected');
+    //todo null
+    selectedElement ? inputAutoComplete.value = selectedElement.textContent : null;
 
+    if (e.keyCode === 13) {
+        let currentInputValue = inputAutoComplete.value;
+        if (inputAutoComplete.value !== "") {
+            const array = selectedItemsArray.filter(selectedElement => selectedElement === currentInputValue);
+            array.length === 0 ? selectedItemsArray.push(currentInputValue)
+                : console.log('Element exist');
+        }
         selectedListAutoComplete.textContent = '';
         selectedItemsArray.forEach(selectedArrElement => {
             renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
         });
-    }
 
+        inputAutoComplete.value = "";
+        newArray = [];
+        resultListAutoComplete.textContent = '';
+        newArray.forEach(arrElement => {
+            renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
+        });
+    }
     else if (e && e.key.length === 1 || e.keyCode === 8) {
         index = 0;
     }
-
-    const selectedElement = document.querySelector('.selected');
-    selectedElement ? inputAutoComplete.value = selectedElement.textContent : null;
 });
 
 const renderSelectedElement = (arrElement, liElementClass, ulElementClass) => {
