@@ -18,21 +18,19 @@ inputAutoComplete.addEventListener("input", function (e) {
             resultsListItems.push(technology);
         }
     });
-
     renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
-
     const elements = document.querySelectorAll('.result-item__autocomplete');
-    if (elements[0]) {
-        elements[0].classList.add('selected');
+    if (elements[0]) { elements[0].classList.add('selected'); }
+});
+
+// Add element on click to select list
+resultListAutoComplete.addEventListener("click", function (e) {
+    if (e.target && e.target.matches("li.result-item__autocomplete")) {
+        const clickedElement = e.target.innerHTML;
+        const array = selectedListItems.filter(selectedElement => selectedElement === clickedElement);
+        array.length === 0 ? selectedListItems.push(clickedElement) : console.log('Element exist');
+        renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
-    elements.forEach(element => {
-        element.addEventListener('click', (e) => {
-            const clickedElement = element.innerHTML;
-            const array = selectedListItems.filter(selectedElement => selectedElement === clickedElement);
-            array.length === 0 ? selectedListItems.push(clickedElement) : console.log('Element exist');
-            renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
-        })
-    })
 });
 
 // Remove element from selected list
@@ -40,9 +38,7 @@ selectedListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("span.close-icon")) {
         const parentValue = e.target.parentNode.textContent;
         const index = selectedListItems.indexOf(parentValue);
-        if (index > -1) {
-            selectedListItems.splice(index, 1);
-        }
+        if (index > -1) { selectedListItems.splice(index, 1); }
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
@@ -140,4 +136,3 @@ const renderElements = (array, liElementClass, ulElementClass, shouldCreateAddit
         ul.appendChild(fragment);
     });
 }
-
