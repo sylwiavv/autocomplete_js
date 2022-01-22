@@ -8,22 +8,18 @@ let resultsListItems = [];
 let selectedListItems = [];
 
 inputAutoComplete.addEventListener("input", function (e) {
-    const firstElement = inputAutoComplete.value.replace(/\s/g, '');
+    const resultItemValue = e.target.value.toLowerCase().replace(/\s/g, '');
     resultsListItems = [];
-    if (firstElement !== "") {
-        resultsListItems.push(firstElement);
-    }
-    resultListAutoComplete.textContent = '';
+    if (resultItemValue !== "") { resultsListItems.push(resultItemValue); }
     technologies.forEach((technology) => {
-        let inputElement = e.target.value.toLowerCase().replace(/\s/g, '');
         let arrElement = technology.toLowerCase().replace(/\s/g, '');
-        let matchesWord = arrElement.match(escapeRegExp(inputElement));
-        if (matchesWord !== null && inputElement !== '') {
+        let matchesWord = arrElement.match(escapeRegExp(resultItemValue));
+        if (matchesWord !== null && resultItemValue !== '') {
             resultsListItems.push(technology);
         }
     });
 
-    renderElement(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
+    renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
 
     const elements = document.querySelectorAll('.result-item__autocomplete');
     if (elements[0]) {
@@ -52,10 +48,6 @@ selectedListAutoComplete.addEventListener("click", function (e) {
 });
 
 let index = 0;
-// function scrollWin(x, y, element) {
-//     element.scrollBy(x, y);
-//     console.log('test');
-// }
 
 inputAutoComplete.addEventListener("keydown", (e) => {
     const allLi = document.querySelectorAll('.result-item__autocomplete');
@@ -112,7 +104,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
         resultsListItems = [];
-        renderElement(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
+        renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
     }
 
     // numbers, letters, special char and backspace
@@ -125,11 +117,12 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     if (selectedElement) inputAutoComplete.value = selectedElement.textContent;
 });
 
+// Render items for select list
 const renderSelectedElement = (array, liElementClass, ulElementClass) => {
-    renderElement(array, liElementClass, ulElementClass,  true);
+    renderElements(array, liElementClass, ulElementClass,  true);
 }
 
-const renderElement = (array, liElementClass, ulElementClass, shouldCreateAdditionalElement) => {
+const renderElements = (array, liElementClass, ulElementClass, shouldCreateAdditionalElement) => {
     const ul = document.querySelector(ulElementClass);
     ul.textContent = '';
     console.log(array);
