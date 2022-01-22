@@ -55,9 +55,6 @@ selectedListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("span.close-icon")) {
         const parentValue = e.target.parentNode.textContent;
         const index = selectedItemsArray.indexOf(parentValue);
-        console.log([parentValue]);
-        console.log(index);
-        console.log(e);
         if (index > -1) {
             selectedItemsArray.splice(index, 1);
         }
@@ -69,6 +66,10 @@ selectedListAutoComplete.addEventListener("click", function (e) {
 });
 
 let index = 0;
+// function scrollWin(x, y, element) {
+//     element.scrollBy(x, y);
+//     console.log('test');
+// }
 
 inputAutoComplete.addEventListener("keydown", (e) => {
     const allLi = document.querySelectorAll('.result-item__autocomplete');
@@ -83,8 +84,12 @@ inputAutoComplete.addEventListener("keydown", (e) => {
 
         if (index <= liElementsLength) {
             getActualElement.classList.add('selected');
+            // getActualElement.setAttribute('tabindex', '1');
+            // getActualElement.focus();
             if (index > 1) {
                 getPreviousElement.classList.remove('selected');
+                // getActualElement.setAttribute('tabindex', '-1');
+                // scrollWin(0, 20, resultListAutoComplete);
             }
         } else {
             allLi[liElementsLength - 1].classList.remove('selected')
@@ -101,10 +106,10 @@ inputAutoComplete.addEventListener("keydown", (e) => {
 
         if (index > 0) {
             getActualElement.classList.add('selected');
+            // scrollWin(0, 40, resultListAutoComplete);
             getPreviousElement.classList.remove('selected');
-
         } else {
-            allLi[0].classList.remove('selected')
+            allLi[0].classList.remove('selected');
             allLi[liElementsLength - 1].classList.add('selected');
             index = liElementsLength;
         }
@@ -143,6 +148,8 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     const selectedElement = document.querySelector('.selected');
     //todo null
     selectedElement ? inputAutoComplete.value = selectedElement.textContent : null;
+    // allLi.contains(".selected")[0].focus();
+    // selectedElement.setAttribute('tabindex', '1');
 });
 
 const renderSelectedElement = (arrElement, liElementClass, ulElementClass) => {

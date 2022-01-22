@@ -15,11 +15,10 @@
 }
 
 .result-list__autocomplete {
-  background-color: #b7b7b745;
+  background-color: rgba(249,249,249,.8);
   margin-bottom: 16px;
-  transition: .8s ease;
   max-height: 200px;
-  overflow: scroll;
+  //overflow: scroll;
 
   .result-item__autocomplete {
     &:hover {
@@ -71,6 +70,7 @@ h1 {
 
 h1,
 .container {
+  color: #060d1c;
   width: 100%;
 }
 
@@ -82,8 +82,9 @@ h1,
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+
+  margin-top: 40px;
 }
 
 .result-item__autocomplete {
@@ -97,12 +98,12 @@ h1,
   }
 
   &:hover {
-    background-color: rgba(249,249,249,.8);
+    background-color: #295fda0d;
   }
 
   &.selected {
+    background-color: #295fda0d;
     position: relative;
-    background-color: rgba(249,249,249,.8);
     font-weight: 600;
 
     &:before {
@@ -123,3 +124,29 @@ h1,
     }
   }
 }
+
+// Media queries
+$mobile: "(max-width: 375px)";
+$tablet: "(min-width: 768px) and (max-width: 1023px)";
+$desktop: "(min-width: 1024px)";
+
+//mobile
+@media #{$mobile} {
+  .container {
+    justify-content: flex-start;
+    margin-top: 32px;
+  }
+}
+
+//
+//@media #{$tablet} {
+//  h1 {
+//    color: blue;
+//  }
+//}
+//
+//@media #{$desktop} {
+//  h1 {
+//    color: green;
+//  }
+//}
