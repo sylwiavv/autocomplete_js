@@ -39,9 +39,11 @@ resultListAutoComplete.addEventListener("click", function (e) {
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
         resultsListItems = [];
+        resultListAutoComplete.classList.remove('empty')
         setTimeout(() => {
             renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
-        }, 200);
+            resultListAutoComplete.classList.add('empty');
+        }, 250);
     }
 });
 
