@@ -7,11 +7,10 @@ const selectedListAutoComplete = document.querySelector('.selected-list__autocom
 let newArray = [];
 let selectedItemsArray = [];
 
-
 inputAutoComplete.addEventListener("input", function (e) {
-    const firstElement = inputAutoComplete.value;
+    const firstElement = inputAutoComplete.value.replace(/\s/g, '');
     newArray = [];
-    if (firstElement.replace(/\s/g, '') !== "") {
+    if (firstElement !== "") {
         newArray.push(firstElement);
     }
     resultListAutoComplete.textContent = '';
@@ -122,8 +121,8 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     }
     // Enter
     if (e.keyCode === 13) {
-        let currentInputValue = inputAutoComplete.value;
-        if (currentInputValue.replace(/\s/g, '') !== "") {
+        let currentInputValue = inputAutoComplete.value.replace(/\s/g, '');
+        if (currentInputValue !== "") {
             const array = selectedItemsArray.filter(selectedElement => selectedElement === currentInputValue);
             array.length === 0 ? selectedItemsArray.push(currentInputValue) : console.log('Element exist');
         }
