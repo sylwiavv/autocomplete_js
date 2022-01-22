@@ -27,8 +27,12 @@ inputAutoComplete.addEventListener("input", function (e) {
 resultListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("li.result-item__autocomplete")) {
         const clickedElement = e.target.textContent;
-        const array = selectedListItems.filter(selectedElement => selectedElement === clickedElement);
-        array.length === 0 ? selectedListItems.push(clickedElement) : console.log('Element exist');
+
+        // const noItemsCollection = selectedListItems.filter(selectedElement => selectedElement === clickedElement);
+        // if (noItemsCollection.length === 0) { selectedListItems.push(clickedElement); }
+        /* Check if clicked element exists in selected list,
+         if array is empty add element */
+        getEmptyCollection(selectedListItems, clickedElement);
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
@@ -93,10 +97,8 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     if (e.keyCode === 13) {
         let currentInputValue = inputAutoComplete.value.replace(/\s/g, '');
         if (currentInputValue !== "") {
-            const array = selectedListItems.filter(selectedElement => selectedElement === currentInputValue);
-            array.length === 0 ? selectedListItems.push(currentInputValue) : console.log('Element exist');
+            getEmptyCollection(selectedListItems, currentInputValue);
         }
-        console.log(selectedListAutoComplete)
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
         resultsListItems = [];
