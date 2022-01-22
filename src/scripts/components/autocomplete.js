@@ -12,13 +12,15 @@ inputAutoComplete.addEventListener("input", function (e) {
     resultsListItems = [];
     if (resultItemValue !== "") { resultsListItems.push(resultItemValue); }
     technologies.forEach((technology) => {
-        let arrElement = technology.toLowerCase().replace(/\s/g, '');
-        let matchesWord = arrElement.match(escapeRegExp(resultItemValue));
-        if (matchesWord !== null && resultItemValue !== '') { resultsListItems.push(technology); }
+        const getTechnologyItem = technology.toLowerCase().replace(/\s/g, '');
+        const matchesItem = getTechnologyItem.match(escapeRegExp(resultItemValue));
+        if (matchesItem !== null && resultItemValue !== '') {
+            resultsListItems.push(technology);
+        }
     });
     renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
-    const elements = document.querySelectorAll('.result-item__autocomplete');
-    if (elements[0]) { elements[0].classList.add('selected'); }
+    const resultItemsAutocomplete = document.querySelectorAll('.result-item__autocomplete');
+    if (resultItemsAutocomplete[0]) { resultItemsAutocomplete[0].classList.add('selected'); }
 });
 
 // Add element on click to select list
@@ -30,6 +32,7 @@ resultListAutoComplete.addEventListener("click", function (e) {
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
+//
 
 // Remove element from selected list
 selectedListAutoComplete.addEventListener("click", function (e) {
@@ -110,25 +113,32 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     if (selectedElement) inputAutoComplete.value = selectedElement.textContent;
 });
 
-// Render items for select list
-const renderSelectedElement = (array, liElementClass, ulElementClass) => {
-    renderElements(array, liElementClass, ulElementClass,  true);
+// Check if clicked element exists in selected list, if array is empty add element
+const getEmptyCollection = (list, clickedElement) => {
+    const noItemsCollection = list.filter(selectedElement => selectedElement === clickedElement);
+    if (noItemsCollection.length === 0) { selectedListItems.push(clickedElement); }
 }
 
-const renderElements = (array, liElementClass, ulElementClass, shouldCreateAdditionalElement) => {
+// Render items for select list
+const renderSelectedElement = (listItems, liElementClass, ulElementClass) => {
+    renderElements(listItems, liElementClass, ulElementClass,  true);
+}
+
+const renderElements = (listItems, liElementClass, ulElementClass, shouldCreateAdditionalElement) => {
     const ul = document.querySelector(ulElementClass);
     ul.textContent = '';
-    console.log(array);
-    array.forEach(arrElement => {
+    listItems.forEach(arrElement => {
         const fragment = document.createDocumentFragment();
         const li = document.createElement('li');
         li.classList.add(liElementClass);
         li.innerHTML = arrElement;
+
         if (shouldCreateAdditionalElement) {
             const span = document.createElement('span');
             span.classList.add('close-icon');
             li.appendChild(span);
         }
+
         fragment.appendChild(li);
         ul.appendChild(fragment);
     });
