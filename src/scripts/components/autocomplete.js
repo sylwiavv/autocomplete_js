@@ -1,14 +1,11 @@
 import {escapeRegExp, moveCursorToEnd} from '../helpers/helpers.js';
+import { technologies } from '../../data/technologies';
 
 const inputAutoComplete = document.querySelector('#input');
 const resultListAutoComplete = document.querySelector('.result-list__autocomplete');
 const selectedListAutoComplete = document.querySelector('.selected-list__autocomplete');
 let newArray = [];
 let selectedItemsArray = [];
-
-const technologies = [
-    'Java Script', 'React', 'Next.js', 'HTML', 'scss', 'less', 'sass', 'Vue', 'Vanilla', 'Typescript', 'Angular', 'Python', 'Java', 'Go', 'Ruby', 'C++', 'C#', ';dziwny'
-];
 
 const searchFunction = (inputElement, arrElement) => {
     inputAutoComplete.addEventListener("input", function (e) {
