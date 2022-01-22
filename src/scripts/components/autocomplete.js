@@ -22,12 +22,10 @@ inputAutoComplete.addEventListener("input", function (e) {
             newArray.push(technology);
         }
     });
-    newArray.forEach(arrElement => {
-        renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
-    });
+
+    renderElement(newArray, 'result-item__autocomplete', '.result-list__autocomplete');
 
     const elements = document.querySelectorAll('.result-item__autocomplete');
-    // console.log(elements[0].textContent.length);
     if (elements[0]) {
         elements[0].classList.add('selected');
     }
@@ -36,18 +34,10 @@ inputAutoComplete.addEventListener("input", function (e) {
             const clickedElement = element.innerHTML;
             const array = selectedItemsArray.filter(selectedElement => selectedElement === clickedElement);
             array.length === 0 ? selectedItemsArray.push(clickedElement) : console.log('Element exist');
-            selectedListAutoComplete.textContent = '';
-            selectedItemsArray.forEach(selectedArrElement => {
-                renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
-            });
+            renderSelectedElement(selectedItemsArray, 'selected-item__autocomplete', '.selected-list__autocomplete');
         })
     })
 });
-
-// const searchFunction = (inputElement, arrElement) => {
-//
-// }
-
 
 // Remove element from selected list
 selectedListAutoComplete.addEventListener("click", function (e) {
@@ -57,10 +47,7 @@ selectedListAutoComplete.addEventListener("click", function (e) {
         if (index > -1) {
             selectedItemsArray.splice(index, 1);
         }
-        selectedListAutoComplete.textContent = '';
-        selectedItemsArray.forEach(selectedArrElement => {
-            renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
-        });
+        renderSelectedElement(selectedItemsArray, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
 
@@ -126,18 +113,13 @@ inputAutoComplete.addEventListener("keydown", (e) => {
             const array = selectedItemsArray.filter(selectedElement => selectedElement === currentInputValue);
             array.length === 0 ? selectedItemsArray.push(currentInputValue) : console.log('Element exist');
         }
-        selectedListAutoComplete.textContent = "";
-        selectedItemsArray.forEach(selectedArrElement => {
-            renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
-        });
-
+        console.log(selectedListAutoComplete)
+        renderSelectedElement(selectedItemsArray, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
         newArray = [];
-        resultListAutoComplete.textContent = "";
-        newArray.forEach(arrElement => {
-            renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
-        });
+        renderElement(newArray, 'result-item__autocomplete', '.result-list__autocomplete');
     }
+
     // numbers, letters, special char and backspace
     if (e && e.key.length === 1 || e.keyCode === 8) {
         index = 1;
@@ -151,24 +133,26 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     // selectedElement.setAttribute('tabindex', '1');
 });
 
-const renderSelectedElement = (arrElement, liElementClass, ulElementClass) => {
-    renderElement(arrElement, liElementClass, ulElementClass);
-    const span = document.createElement('span');
-    span.classList.add('close-icon');
-    const resultItemsAutoComplete = document.querySelectorAll('.selected-item__autocomplete');
-    resultItemsAutoComplete.forEach(element => {
-        element.appendChild(span);
-    });
+const renderSelectedElement = (array, liElementClass, ulElementClass) => {
+    renderElement(array, liElementClass, ulElementClass,  true);
 }
 
-const renderElement = (arrElement, liElementClass, ulElementClass) => {
-    const fragment = document.createDocumentFragment();
+const renderElement = (array, liElementClass, ulElementClass, shouldCreateAdditionalElement) => {
     const ul = document.querySelector(ulElementClass);
-    const li = document.createElement('li');
-
-    li.classList.add(liElementClass);
-    li.innerHTML = arrElement;
-    fragment.appendChild(li);
-    ul.appendChild(fragment);
+    ul.textContent = '';
+    console.log(array);
+    array.forEach(arrElement => {
+        const fragment = document.createDocumentFragment();
+        const li = document.createElement('li');
+        li.classList.add(liElementClass);
+        li.innerHTML = arrElement;
+        if (shouldCreateAdditionalElement) {
+            const span = document.createElement('span');
+            span.classList.add('close-icon');
+            li.appendChild(span);
+        }
+        fragment.appendChild(li);
+        ul.appendChild(fragment);
+    });
 }
 
