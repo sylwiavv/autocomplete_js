@@ -1,5 +1,5 @@
-import { escapeRegExp, moveCursorToEnd } from '../helpers/helpers.js';
-import { technologies } from '../../data/technologies';
+import {escapeRegExp, moveCursorToEnd} from '../helpers/helpers.js';
+import {technologies} from '../../data/technologies';
 
 const inputAutoComplete = document.querySelector('#input');
 const resultListAutoComplete = document.querySelector('.result-list__autocomplete');
@@ -10,17 +10,23 @@ let selectedListItems = [];
 inputAutoComplete.addEventListener("input", function (e) {
     const resultItemValue = e.target.value.toLowerCase().replace(/\s/g, '');
     resultsListItems = [];
-    if (resultItemValue !== "") { resultsListItems.push(resultItemValue); }
+    if (resultItemValue !== "") {
+        resultsListItems.push(resultItemValue);
+    }
     technologies.forEach((technology) => {
         const getTechnologyItem = technology.toLowerCase().replace(/\s/g, '');
-        const matchesItem = getTechnologyItem.match(escapeRegExp(resultItemValue));
-        if (matchesItem !== null && resultItemValue !== '') {
+        const matchItems = getTechnologyItem.match(escapeRegExp(resultItemValue));
+
+        // empty match string do not return null but empty object
+        if (matchItems !== null && resultItemValue !== '') {
             resultsListItems.push(technology);
         }
     });
     renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
     const resultItemsAutocomplete = document.querySelectorAll('.result-item__autocomplete');
-    if (resultItemsAutocomplete[0]) { resultItemsAutocomplete[0].classList.add('selected'); }
+    if (resultItemsAutocomplete[0]) {
+        resultItemsAutocomplete[0].classList.add('selected');
+    }
 });
 
 // Add element on click to select list
@@ -28,14 +34,14 @@ resultListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("li.result-item__autocomplete")) {
         const clickedElement = e.target;
         const clickedElementValue = e.target.textContent;
-        // const noItemsCollection = selectedListItems.filter(selectedElement => selectedElement === clickedElement);
-        // if (noItemsCollection.length === 0) { selectedListItems.push(clickedElement); }
-        /* Check if clicked element exists in selected list,
-         if array is empty add element */
         const resultListAutocomplete = document.querySelectorAll('.result-item__autocomplete');
         resultListAutocomplete[0].classList.remove('selected');
         clickedElement.classList.add('selected');
-        getEmptyCollection(selectedListItems, clickedElementValue);
+        // Check if clicked element exists in selected list, if array is empty add element
+        const foundItems = selectedListItems.filter(selectedElement => selectedElement === clickedElementValue);
+        if (foundItems.length === 0) {
+            selectedListItems.push(clickedElementValue);
+        }
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
         resultsListItems = [];
@@ -43,7 +49,7 @@ resultListAutoComplete.addEventListener("click", function (e) {
         setTimeout(() => {
             renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
             resultListAutoComplete.classList.add('empty');
-        }, 250);
+        }, 200);
     }
 });
 
@@ -52,7 +58,9 @@ selectedListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("span.close-icon")) {
         const clickedElement = e.target.parentNode.textContent;
         const index = selectedListItems.indexOf(clickedElement);
-        if (index > -1) { selectedListItems.splice(index, 1); }
+        if (index > -1) {
+            selectedListItems.splice(index, 1);
+        }
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
@@ -100,13 +108,16 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     if (e.keyCode === 27) {
         inputAutoComplete.value = "";
         resultsListItems = [];
-        resultListAutoComplete.textContent = "";
+        renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
     }
     // Enter
     if (e.keyCode === 13) {
         let currentInputValue = inputAutoComplete.value.replace(/\s/g, '');
         if (currentInputValue !== "") {
-            getEmptyCollection(selectedListItems, currentInputValue);
+            const foundItems = selectedListItems.filter(selectedElement => selectedElement === currentInputValue);
+            if (foundItems.length === 0) {
+                selectedListItems.push(currentInputValue);
+            }
         }
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
@@ -124,18 +135,13 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     if (selectedElement) inputAutoComplete.value = selectedElement.textContent;
 });
 
-// Check if clicked element exists in selected list, if array is empty add element
-const getEmptyCollection = (list, clickedElement) => {
-    const noItemsCollection = list.filter(selectedElement => selectedElement === clickedElement);
-    if (noItemsCollection.length === 0) { selectedListItems.push(clickedElement); }
-}
-
 // Render items for select list
 const renderSelectedElement = (listItems, liElementClass, ulElementClass) => {
-    renderElements(listItems, liElementClass, ulElementClass,  true);
+    const shouldCreateDeleteIcon = true;
+    renderElements(listItems, liElementClass, ulElementClass, shouldCreateDeleteIcon);
 }
 
-const renderElements = (listItems, liElementClass, ulElementClass, shouldCreateAdditionalElement) => {
+const renderElements = (listItems, liElementClass, ulElementClass, shouldCreateDeleteIcon) => {
     const ul = document.querySelector(ulElementClass);
     ul.textContent = '';
     listItems.forEach(arrElement => {
@@ -144,7 +150,7 @@ const renderElements = (listItems, liElementClass, ulElementClass, shouldCreateA
         li.classList.add(liElementClass);
         li.innerHTML = arrElement;
 
-        if (shouldCreateAdditionalElement) {
+        if (shouldCreateDeleteIcon) {
             const span = document.createElement('span');
             span.classList.add('close-icon');
             li.appendChild(span);
