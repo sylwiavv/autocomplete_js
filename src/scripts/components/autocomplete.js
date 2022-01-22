@@ -7,44 +7,47 @@ const selectedListAutoComplete = document.querySelector('.selected-list__autocom
 let newArray = [];
 let selectedItemsArray = [];
 
-const searchFunction = (inputElement, arrElement) => {
-    inputAutoComplete.addEventListener("input", function (e) {
-        const firstElement = inputAutoComplete.value;
-        newArray = [];
-        if (firstElement.replace(/\s/g, '') !== "") {
-            newArray.push(firstElement);
-        }
-        resultListAutoComplete.textContent = '';
-        technologies.forEach((technology) => {
-            inputElement = e.target.value.toLowerCase().replace(/\s/g, '');
-            arrElement = technology.toLowerCase().replace(/\s/g, '');
-            let matchesWord = arrElement.match(escapeRegExp(inputElement));
-            if (matchesWord !== null && inputElement !== '') {
-                newArray.push(technology);
-            }
-        });
-        newArray.forEach(arrElement => {
-            renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
-        });
 
-        const elements = document.querySelectorAll('.result-item__autocomplete');
-        // console.log(elements[0].textContent.length);
-        if (elements[0]) {
-            elements[0].classList.add('selected');
+inputAutoComplete.addEventListener("input", function (e) {
+    const firstElement = inputAutoComplete.value;
+    newArray = [];
+    if (firstElement.replace(/\s/g, '') !== "") {
+        newArray.push(firstElement);
+    }
+    resultListAutoComplete.textContent = '';
+    technologies.forEach((technology) => {
+        let inputElement = e.target.value.toLowerCase().replace(/\s/g, '');
+        let arrElement = technology.toLowerCase().replace(/\s/g, '');
+        let matchesWord = arrElement.match(escapeRegExp(inputElement));
+        if (matchesWord !== null && inputElement !== '') {
+            newArray.push(technology);
         }
-        elements.forEach(element => {
-            element.addEventListener('click', (e) => {
-                const clickedElement = element.innerHTML;
-                const array = selectedItemsArray.filter(selectedElement => selectedElement === clickedElement);
-                array.length === 0 ? selectedItemsArray.push(clickedElement) : console.log('Element exist');
-                selectedListAutoComplete.textContent = '';
-                selectedItemsArray.forEach(selectedArrElement => {
-                    renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
-                });
-            })
-        })
     });
-}
+    newArray.forEach(arrElement => {
+        renderElement(arrElement, 'result-item__autocomplete', '.result-list__autocomplete');
+    });
+
+    const elements = document.querySelectorAll('.result-item__autocomplete');
+    // console.log(elements[0].textContent.length);
+    if (elements[0]) {
+        elements[0].classList.add('selected');
+    }
+    elements.forEach(element => {
+        element.addEventListener('click', (e) => {
+            const clickedElement = element.innerHTML;
+            const array = selectedItemsArray.filter(selectedElement => selectedElement === clickedElement);
+            array.length === 0 ? selectedItemsArray.push(clickedElement) : console.log('Element exist');
+            selectedListAutoComplete.textContent = '';
+            selectedItemsArray.forEach(selectedArrElement => {
+                renderSelectedElement(selectedArrElement, 'selected-item__autocomplete', '.selected-list__autocomplete');
+            });
+        })
+    })
+});
+
+// const searchFunction = (inputElement, arrElement) => {
+//
+// }
 
 
 // Remove element from selected list
@@ -170,4 +173,3 @@ const renderElement = (arrElement, liElementClass, ulElementClass) => {
     ul.appendChild(fragment);
 }
 
-searchFunction();

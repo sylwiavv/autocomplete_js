@@ -33,9 +33,21 @@ ol, ul {
 
 h1 {
   font-size: 32px;
+  margin-bottom: 16px;
 }
 
 input {
+  border: 1px solid #c0c0c0;
   border-radius: 4px;
+  outline: none;
   width: 100%;
+
+  &:focus,
+  &:hover {
+    border-color: #0a0a1e;
+  }
+
+  &::placeholder {
+    text-align: start;
+  }
 }

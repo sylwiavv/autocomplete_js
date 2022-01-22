@@ -1,0 +1,37 @@
+.selected-list__autocomplete {
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 300px;
+  overflow: scroll;
+
+  .selected-item__autocomplete {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #070725;
+    padding: 8px 4px 8px 16px;
+    border-radius: 4px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    max-width: 240px;
+    width: auto;
+
+    .close-icon {
+      display: flex;
+      background-image: url(./assets/icons/icon__close.svg);
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 24px;
+      width: 30px;
+      height: 30px;
+      transition: background-image, .4s;
+      margin-left: 4px;
+
+      &:focus,
+      &:hover {
+        cursor: pointer;
+        background-image: url(./assets/icons/icon__close-hover.svg);
+      }
+    }
+  }
+}

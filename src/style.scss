@@ -1,5 +1,7 @@
 @import 'scss/global';
 @import "scss/fonts";
+@import "scss/components/result-list";
+@import "scss/components/selected-list";
 
 .input__autocomplete {
   display: flex;
@@ -8,64 +10,6 @@
   padding: 4px 16px;
   height: 48px;
   width: 100%;
-}
-
-.input__autocomplete::placeholder {
-  text-align: start;
-}
-
-.result-list__autocomplete {
-  background-color: rgba(249,249,249,.8);
-  margin-bottom: 16px;
-  //max-height: 200px;
-  //overflow: scroll;
-
-  .result-item__autocomplete {
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
-
-.result-item__autocomplete {
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 16px;
-}
-
-//.result-list__autocomplete li:not(:last-child) {
-//  margin-bottom: 8px;
-//}
-
-.selected-item__autocomplete {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid #070725;
-  padding: 8px 8px 8px 16px;
-  border-radius: 4px;
-  max-width: 240px;
-  width: auto;
-  margin: 4px;
-}
-
-.selected-item__autocomplete .close-icon {
-  display: flex;
-  background-image: url(./assets/icons/icon__close.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 24px;
-  width: 30px;
-  height: 30px;
-
-  &:focus,
-  &:hover {
-    cursor: pointer;
-    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
-  }
-}
-h1 {
-  margin-bottom: 16px;
 }
 
 h1,
@@ -78,7 +22,7 @@ h1,
   padding: 16px;
   padding-top: 0;
   margin: auto;
-  max-width: 400px;
+  max-width: 600px;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -87,42 +31,6 @@ h1,
   margin-top: 40px;
 }
 
-.result-item__autocomplete {
-  transition: background-color, .2s;
-  position: relative;
-
-  &:before {
-    content: '';
-    opacity: 0;
-  }
-
-  &:hover {
-    background-color: #295fda0d;
-  }
-
-  &.selected {
-    background-color: #295fda0d;
-    position: relative;
-    font-weight: 600;
-
-    &:before {
-      content: '';
-      background: #295fda;
-      box-sizing: border-box;
-      height: 100%;
-      width: 6px;
-      padding: 1px;
-      position: absolute;
-      top: 0;
-      left: 0;
-
-      opacity: 1;
-      border-top-right-radius: 48px;
-      border-bottom-right-radius: 48px;
-      transition: opacity, .2s ease-out;
-    }
-  }
-}
 
 // Media queries
 $mobile: "(max-width: 375px)";
@@ -136,16 +44,3 @@ $desktop: "(min-width: 1024px)";
     margin-top: 32px;
   }
 }
-
-//
-//@media #{$tablet} {
-//  h1 {
-//    color: blue;
-//  }
-//}
-//
-//@media #{$desktop} {
-//  h1 {
-//    color: green;
-//  }
-//}
