@@ -17,7 +17,7 @@
 .result-list__autocomplete {
   background-color: rgba(249,249,249,.8);
   margin-bottom: 16px;
-  max-height: 200px;
+  //max-height: 200px;
   //overflow: scroll;
 
   .result-item__autocomplete {
@@ -89,7 +89,6 @@ h1,
 
 .result-item__autocomplete {
   transition: background-color, .2s;
-  min-height: 40px;
   position: relative;
 
   &:before {
