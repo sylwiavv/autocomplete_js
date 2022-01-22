@@ -26,13 +26,20 @@ inputAutoComplete.addEventListener("input", function (e) {
 // Add element on click to select list
 resultListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("li.result-item__autocomplete")) {
-        const clickedElement = e.target.textContent;
-
+        const cliskedElement = e.target;
+        const clickedElementValue = e.target.textContent;
         // const noItemsCollection = selectedListItems.filter(selectedElement => selectedElement === clickedElement);
         // if (noItemsCollection.length === 0) { selectedListItems.push(clickedElement); }
         /* Check if clicked element exists in selected list,
          if array is empty add element */
-        getEmptyCollection(selectedListItems, clickedElement);
+        const resultListAutocomplete = document.querySelectorAll('.result-item__autocomplete');
+        resultListAutocomplete[0].classList.remove('selected');
+        cliskedElement.classList.add('selected');
+        getEmptyCollection(selectedListItems, clickedElementValue);
+        renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        inputAutoComplete.value = "";
+        resultsListItems = [];
+        renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
