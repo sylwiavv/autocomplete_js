@@ -26,7 +26,7 @@ inputAutoComplete.addEventListener("input", function (e) {
 // Add element on click to select list
 resultListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("li.result-item__autocomplete")) {
-        const cliskedElement = e.target;
+        const clickedElement = e.target;
         const clickedElementValue = e.target.textContent;
         // const noItemsCollection = selectedListItems.filter(selectedElement => selectedElement === clickedElement);
         // if (noItemsCollection.length === 0) { selectedListItems.push(clickedElement); }
@@ -34,15 +34,16 @@ resultListAutoComplete.addEventListener("click", function (e) {
          if array is empty add element */
         const resultListAutocomplete = document.querySelectorAll('.result-item__autocomplete');
         resultListAutocomplete[0].classList.remove('selected');
-        cliskedElement.classList.add('selected');
+        clickedElement.classList.add('selected');
         getEmptyCollection(selectedListItems, clickedElementValue);
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
         resultsListItems = [];
-        renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
+        setTimeout(() => {
+            renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
+        }, 200);
     }
 });
-//
 
 // Remove element from selected list
 selectedListAutoComplete.addEventListener("click", function (e) {
