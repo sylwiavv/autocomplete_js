@@ -1,17 +1,17 @@
-import {escapeRegExp, moveCursorToEnd} from '../helpers/helpers.js';
+import { escapeRegExp, moveCursorToEnd } from '../helpers/helpers.js';
 import { technologies } from '../../data/technologies';
 
 const inputAutoComplete = document.querySelector('#input');
 const resultListAutoComplete = document.querySelector('.result-list__autocomplete');
 const selectedListAutoComplete = document.querySelector('.selected-list__autocomplete');
-let newArray = [];
-let selectedItemsArray = [];
+let resultsListItems = [];
+let selectedListItems = [];
 
 inputAutoComplete.addEventListener("input", function (e) {
     const firstElement = inputAutoComplete.value.replace(/\s/g, '');
-    newArray = [];
+    resultsListItems = [];
     if (firstElement !== "") {
-        newArray.push(firstElement);
+        resultsListItems.push(firstElement);
     }
     resultListAutoComplete.textContent = '';
     technologies.forEach((technology) => {
@@ -19,11 +19,11 @@ inputAutoComplete.addEventListener("input", function (e) {
         let arrElement = technology.toLowerCase().replace(/\s/g, '');
         let matchesWord = arrElement.match(escapeRegExp(inputElement));
         if (matchesWord !== null && inputElement !== '') {
-            newArray.push(technology);
+            resultsListItems.push(technology);
         }
     });
 
-    renderElement(newArray, 'result-item__autocomplete', '.result-list__autocomplete');
+    renderElement(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
 
     const elements = document.querySelectorAll('.result-item__autocomplete');
     if (elements[0]) {
@@ -32,9 +32,9 @@ inputAutoComplete.addEventListener("input", function (e) {
     elements.forEach(element => {
         element.addEventListener('click', (e) => {
             const clickedElement = element.innerHTML;
-            const array = selectedItemsArray.filter(selectedElement => selectedElement === clickedElement);
-            array.length === 0 ? selectedItemsArray.push(clickedElement) : console.log('Element exist');
-            renderSelectedElement(selectedItemsArray, 'selected-item__autocomplete', '.selected-list__autocomplete');
+            const array = selectedListItems.filter(selectedElement => selectedElement === clickedElement);
+            array.length === 0 ? selectedListItems.push(clickedElement) : console.log('Element exist');
+            renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         })
     })
 });
@@ -43,11 +43,11 @@ inputAutoComplete.addEventListener("input", function (e) {
 selectedListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("span.close-icon")) {
         const parentValue = e.target.parentNode.textContent;
-        const index = selectedItemsArray.indexOf(parentValue);
+        const index = selectedListItems.indexOf(parentValue);
         if (index > -1) {
-            selectedItemsArray.splice(index, 1);
+            selectedListItems.splice(index, 1);
         }
-        renderSelectedElement(selectedItemsArray, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
 
@@ -70,12 +70,8 @@ inputAutoComplete.addEventListener("keydown", (e) => {
 
         if (index <= liElementsLength) {
             getActualElement.classList.add('selected');
-            // getActualElement.setAttribute('tabindex', '1');
-            // getActualElement.focus();
             if (index > 1) {
                 getPreviousElement.classList.remove('selected');
-                // getActualElement.setAttribute('tabindex', '-1');
-                // scrollWin(0, 20, resultListAutoComplete);
             }
         } else {
             allLi[liElementsLength - 1].classList.remove('selected')
@@ -92,7 +88,6 @@ inputAutoComplete.addEventListener("keydown", (e) => {
 
         if (index > 0) {
             getActualElement.classList.add('selected');
-            // scrollWin(0, 40, resultListAutoComplete);
             getPreviousElement.classList.remove('selected');
         } else {
             allLi[0].classList.remove('selected');
@@ -103,21 +98,21 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     // esc
     if (e.keyCode === 27) {
         inputAutoComplete.value = "";
-        newArray = [];
+        resultsListItems = [];
         resultListAutoComplete.textContent = "";
     }
     // Enter
     if (e.keyCode === 13) {
         let currentInputValue = inputAutoComplete.value.replace(/\s/g, '');
         if (currentInputValue !== "") {
-            const array = selectedItemsArray.filter(selectedElement => selectedElement === currentInputValue);
-            array.length === 0 ? selectedItemsArray.push(currentInputValue) : console.log('Element exist');
+            const array = selectedListItems.filter(selectedElement => selectedElement === currentInputValue);
+            array.length === 0 ? selectedListItems.push(currentInputValue) : console.log('Element exist');
         }
         console.log(selectedListAutoComplete)
-        renderSelectedElement(selectedItemsArray, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
-        newArray = [];
-        renderElement(newArray, 'result-item__autocomplete', '.result-list__autocomplete');
+        resultsListItems = [];
+        renderElement(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
     }
 
     // numbers, letters, special char and backspace
@@ -127,10 +122,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
 
     // Set input value to selected element
     const selectedElement = document.querySelector('.selected');
-    //todo null
-    selectedElement ? inputAutoComplete.value = selectedElement.textContent : null;
-    // allLi.contains(".selected")[0].focus();
-    // selectedElement.setAttribute('tabindex', '1');
+    if (selectedElement) inputAutoComplete.value = selectedElement.textContent;
 });
 
 const renderSelectedElement = (array, liElementClass, ulElementClass) => {
