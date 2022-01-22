@@ -40,7 +40,6 @@ resultListAutoComplete.addEventListener("click", function (e) {
         inputAutoComplete.value = "";
         resultsListItems = [];
         renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
-        renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
 //
