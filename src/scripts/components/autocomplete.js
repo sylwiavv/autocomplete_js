@@ -14,9 +14,7 @@ inputAutoComplete.addEventListener("input", function (e) {
     technologies.forEach((technology) => {
         let arrElement = technology.toLowerCase().replace(/\s/g, '');
         let matchesWord = arrElement.match(escapeRegExp(resultItemValue));
-        if (matchesWord !== null && resultItemValue !== '') {
-            resultsListItems.push(technology);
-        }
+        if (matchesWord !== null && resultItemValue !== '') { resultsListItems.push(technology); }
     });
     renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
     const elements = document.querySelectorAll('.result-item__autocomplete');
@@ -26,7 +24,7 @@ inputAutoComplete.addEventListener("input", function (e) {
 // Add element on click to select list
 resultListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("li.result-item__autocomplete")) {
-        const clickedElement = e.target.innerHTML;
+        const clickedElement = e.target.textContent;
         const array = selectedListItems.filter(selectedElement => selectedElement === clickedElement);
         array.length === 0 ? selectedListItems.push(clickedElement) : console.log('Element exist');
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
@@ -36,15 +34,14 @@ resultListAutoComplete.addEventListener("click", function (e) {
 // Remove element from selected list
 selectedListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("span.close-icon")) {
-        const parentValue = e.target.parentNode.textContent;
-        const index = selectedListItems.indexOf(parentValue);
+        const clickedElement = e.target.parentNode.textContent;
+        const index = selectedListItems.indexOf(clickedElement);
         if (index > -1) { selectedListItems.splice(index, 1); }
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
 
 let index = 0;
-
 inputAutoComplete.addEventListener("keydown", (e) => {
     const allLi = document.querySelectorAll('.result-item__autocomplete');
     const liElementsLength = allLi.length;
