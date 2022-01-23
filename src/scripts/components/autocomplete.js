@@ -8,20 +8,20 @@ let resultsListItems = [];
 let selectedListItems = [];
 
 inputAutoComplete.addEventListener("input", function (e) {
-    const resultItemValue = e.target.value.toLowerCase().replace(/\s/g, '');
+    let inputValue = e.target.value;
     resultsListItems = [];
-    if (resultItemValue !== "") {
-        resultsListItems.push(resultItemValue);
+    // If user enters empty string do nothing
+    if (inputValue.trim() !== "") {
+        resultsListItems.push(inputValue);
+        technologies.forEach((technology) => {
+            const getTechnologyItem = technology.toLowerCase().replace(/\s/g, "");
+            const matchItems = getTechnologyItem.match(escapeRegExp(inputValue.toLowerCase().replace(/\s/g, '')));
+            // If element does not match then match method returns null
+            if (matchItems !== null) {
+                resultsListItems.push(technology);
+            }
+        });
     }
-    technologies.forEach((technology) => {
-        const getTechnologyItem = technology.toLowerCase().replace(/\s/g, '');
-        const matchItems = getTechnologyItem.match(escapeRegExp(resultItemValue));
-
-        // empty match string do not return null but empty object
-        if (matchItems !== null && resultItemValue !== '') {
-            resultsListItems.push(technology);
-        }
-    });
     renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
     const resultItemsAutocomplete = document.querySelectorAll('.result-item__autocomplete');
     if (resultItemsAutocomplete[0]) {
@@ -33,7 +33,7 @@ inputAutoComplete.addEventListener("input", function (e) {
 resultListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("li.result-item__autocomplete")) {
         const clickedElement = e.target;
-        const clickedElementValue = e.target.textContent;
+        const clickedElementValue = e.target.dataset.value.trim();
         const resultListAutocomplete = document.querySelectorAll('.result-item__autocomplete');
         resultListAutocomplete[0].classList.remove('selected');
         clickedElement.classList.add('selected');
@@ -112,13 +112,14 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     }
     // Enter
     if (e.keyCode === 13) {
-        let currentInputValue = inputAutoComplete.value.replace(/\s/g, '');
+        let currentInputValue = inputAutoComplete.value.trim();
         if (currentInputValue !== "") {
             const foundItems = selectedListItems.filter(selectedElement => selectedElement === currentInputValue);
             if (foundItems.length === 0) {
                 selectedListItems.push(currentInputValue);
             }
         }
+
         renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
         resultsListItems = [];
@@ -132,7 +133,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
 
     // Set input value to selected element
     const selectedElement = document.querySelector('.selected');
-    if (selectedElement) inputAutoComplete.value = selectedElement.textContent;
+    if (selectedElement) inputAutoComplete.value = selectedElement.dataset.value;
 });
 
 // Render items for select list
@@ -143,19 +144,18 @@ const renderSelectedElement = (listItems, liElementClass, ulElementClass) => {
 
 const renderElements = (listItems, liElementClass, ulElementClass, shouldCreateDeleteIcon) => {
     const ul = document.querySelector(ulElementClass);
-    ul.textContent = '';
-    listItems.forEach(arrElement => {
+    ul.textContent = "";
+    listItems.forEach(listElement => {
         const fragment = document.createDocumentFragment();
         const li = document.createElement('li');
         li.classList.add(liElementClass);
-        li.innerHTML = arrElement;
-
+        li.setAttribute('data-value', listElement);
+        li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
         if (shouldCreateDeleteIcon) {
             const span = document.createElement('span');
             span.classList.add('close-icon');
             li.appendChild(span);
         }
-
         fragment.appendChild(li);
         ul.appendChild(fragment);
     });
