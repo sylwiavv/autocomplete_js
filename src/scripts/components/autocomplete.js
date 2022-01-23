@@ -1,5 +1,5 @@
-import {escapeRegExp, moveCursorToEnd} from '../helpers/helpers.js';
-import {technologies} from '../../data/technologies';
+import { escapeRegExp, moveCursorToEnd } from '../helpers/helpers.js';
+import { technologies } from '../../data/technologies';
 
 const inputAutoComplete = document.querySelector('#input');
 const resultListAutoComplete = document.querySelector('.result-list__autocomplete');
