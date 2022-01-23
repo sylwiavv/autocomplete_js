@@ -14,8 +14,8 @@ inputAutoComplete.addEventListener("input", function (e) {
     if (inputValue.trim() !== "") {
         resultsListItems.push(inputValue);
         technologies.forEach((technology) => {
-            const getTechnologyItem = technology.toLowerCase().replace(/\s/g, "");
-            const matchItems = getTechnologyItem.match(escapeRegExp(inputValue.toLowerCase().replace(/\s/g, '')));
+            const technologyItem = technology.toLowerCase().replace(/\s/g, "");
+            const matchItems = technologyItem.match(escapeRegExp(inputValue.toLowerCase().replace(/\s/g, '')));
             // If element does not match then match method returns null
             if (matchItems !== null) {
                 resultsListItems.push(technology);
@@ -37,7 +37,7 @@ resultListAutoComplete.addEventListener("click", function (e) {
         const resultListAutocomplete = document.querySelectorAll('.result-item__autocomplete');
         resultListAutocomplete[0].classList.remove('selected');
         clickedElement.classList.add('selected');
-        // Check if clicked element exists in selected list, if array is empty add element
+        // Check if clicked element exists in selected list, if foundItems is empty add element
         const foundItems = selectedListItems.filter(selectedElement => selectedElement === clickedElementValue);
         if (foundItems.length === 0) {
             selectedListItems.push(clickedElementValue);
@@ -69,18 +69,18 @@ let index = 0;
 inputAutoComplete.addEventListener("keydown", (e) => {
     const allLi = document.querySelectorAll('.result-item__autocomplete');
     const liElementsLength = allLi.length;
-    let getPreviousElement;
-    let getActualElement;
+    let previousElement;
+    let actualElement;
     // arrow down
     if (e.keyCode === 40 && liElementsLength > 0) {
         index++;
-        getPreviousElement = allLi[index - 2];
-        getActualElement = allLi[index - 1];
+        previousElement = allLi[index - 2];
+        actualElement = allLi[index - 1];
 
         if (index <= liElementsLength) {
-            getActualElement.classList.add('selected');
+            actualElement.classList.add('selected');
             if (index > 1) {
-                getPreviousElement.classList.remove('selected');
+                previousElement.classList.remove('selected');
             }
         } else {
             allLi[liElementsLength - 1].classList.remove('selected')
@@ -92,12 +92,12 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     if (e.keyCode === 38 && liElementsLength > 0) {
         moveCursorToEnd(e, inputAutoComplete);
         index--;
-        getPreviousElement = allLi[index];
-        getActualElement = allLi[index - 1];
+        previousElement = allLi[index];
+        actualElement = allLi[index - 1];
 
         if (index > 0) {
-            getActualElement.classList.add('selected');
-            getPreviousElement.classList.remove('selected');
+            actualElement.classList.add('selected');
+            previousElement.classList.remove('selected');
         } else {
             allLi[0].classList.remove('selected');
             allLi[liElementsLength - 1].classList.add('selected');
