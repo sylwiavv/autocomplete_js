@@ -56,7 +56,9 @@ resultListAutoComplete.addEventListener("click", function (e) {
 // Remove element from selected list
 selectedListAutoComplete.addEventListener("click", function (e) {
     if (e.target && e.target.matches("span.close-icon")) {
-        const clickedElement = e.target.parentNode.textContent;
+        // const clickedElement = e.target.parentNode.textContent;
+        const clickedElement = e.target.parentNode.dataset.value;
+        console.log(clickedElement)
         const index = selectedListItems.indexOf(clickedElement);
         if (index > -1) {
             selectedListItems.splice(index, 1);
