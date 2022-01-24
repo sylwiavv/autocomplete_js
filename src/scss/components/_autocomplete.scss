@@ -1,6 +1,6 @@
-@import "input-autocomplete";
-@import "result-list-autocomplete";
-@import "selected-list-complete";
+@import "autocomplete/input-autocomplete";
+@import "autocomplete/result-list-autocomplete";
+@import "autocomplete/selected-list-complete";
 
 .autocomplete {
   &__container {
