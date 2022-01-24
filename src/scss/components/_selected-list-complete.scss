@@ -1,11 +1,29 @@
 .autocomplete {
   &__selected-list {
+    display: flex;
+    flex-wrap: wrap;
+    //flex-grow: 1;
+    width: unset;
   }
 
   &__selected-item {
-    @include center;
+    display: flex;
+    align-items: center;
     justify-content: space-between;
+    background-color: $selected-item-backgroundcolor;
     border-radius: 4px;
+    font-size: 14px;
+    color: $background-color;
+    padding-left: $s-indent;
+    padding-right: $xs-indent;
+    margin-top: $xs-indent;
+    margin-bottom: $xs-indent;
+    height: 34px;
+    width: auto;
+
+    &:not(:last-child) {
+      margin-right: $s-indent;
+    }
 
     .close-icon {
       display: flex;
@@ -16,7 +34,7 @@
       width: 30px;
       height: 30px;
       transition: background-image, .4s;
-      margin-left: 4px;
+      margin-left: $s-indent;
 
       &:focus,
       &:hover {
@@ -24,26 +42,5 @@
         background-image: url(./assets/icons/icon__close-hover.svg);
       }
     }
-  }
-}
-
-.autocomplete__selected-list {
-  display: flex;
-  flex-wrap: wrap;
-  max-height: 300px;
-  overflow: scroll;
-
-  .selected-item__autocomplete {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid #070725;
-    padding: 8px 4px 8px 16px;
-    border-radius: 4px;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    width: auto;
-
-
   }
 }

@@ -3,11 +3,12 @@
     display: flex;
     align-self: flex-start;
     text-align: start;
+    flex: 1;
     padding: $xs-indent $base-indent;
     height: 40px;
     background-color: $white-color;
 
-    max-width: $max-width;
+    min-width: 260px;
     width: 100%;
   }
 }

@@ -11,9 +11,13 @@
 <body class="on-loading">
 <div class="autocomplete__container">
     <h1 class="autocomplete__title">Autocomplete</h1>
-    <input id="input" class="autocomplete__input" type="text" tabindex="0" placeholder="Choose technology e.g. React">
-    <ul class="autocomplete__result-list empty"></ul>
-    <ul class="autocomplete__selected-list empty"></ul>
+    <div class="autocomplete__wrapper">
+        <ul class="autocomplete__selected-list"></ul>
+        <div class="autocomplete__input-wrapper">
+            <input id="input" class="autocomplete__input" type="text" tabindex="0" placeholder="Choose technology e.g. React">
+            <ul class="autocomplete__result-list"></ul>
+        </div>
+    </div>
 </div>
 <script src="bundle.js"></script>
 </body>

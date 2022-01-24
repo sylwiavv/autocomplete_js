@@ -5,6 +5,7 @@
 .autocomplete {
   &__container {
     margin: 0 auto;
+    padding: $xs-indent;
     max-width: 600px;
   }
 
@@ -12,5 +13,19 @@
     font-size: 32px;
     font-weight: 500;
     margin-bottom: 16px;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: $white-color;
+    border: 1px solid $border-color;
+    border-radius: 4px;
+    padding: $s-indent;
+  }
+
+  &__input-wrapper {
+    position: relative;
   }
 }

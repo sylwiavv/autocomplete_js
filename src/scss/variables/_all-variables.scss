@@ -23,7 +23,7 @@ $desktop: "(min-width: 1024px)";
 
 // Indents
 $xs-indent: 4px;
-$xs-indent: 8px;
+$s-indent: 8px;
 $m-indent: 16px;
 $l-indent: 24px;
 $xl-indent: 32px;
@@ -33,7 +33,12 @@ $base-indent: $m-indent;
 
 // Colors
 $white-color: #fff;
+$border-color: #d6d8da;
+$background-color: #f4f4f4;
+$input-backgroundcolor: #295fda;
+$selected-item-backgroundcolor: #0451ca;
 
+$font-color: #1c3056;
 
 //
 $max-width: 400px;
