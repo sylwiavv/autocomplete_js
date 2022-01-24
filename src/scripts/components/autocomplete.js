@@ -35,6 +35,7 @@ resultListAutoComplete.addEventListener("click", function (e) {
         const clickedElement = e.target;
         const clickedElementValue = e.target.dataset.value.trim();
         const resultListAutocomplete = document.querySelectorAll('.result-item__autocomplete');
+        // Remove select class from first element
         resultListAutocomplete[0].classList.remove('selected');
         clickedElement.classList.add('selected');
         // Check if clicked element exists in selected list, if foundItems is empty add element
@@ -42,7 +43,7 @@ resultListAutoComplete.addEventListener("click", function (e) {
         if (foundItems.length === 0) {
             selectedListItems.push(clickedElementValue);
         }
-        renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        renderSelectedElements(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
         resultsListItems = [];
         resultListAutoComplete.classList.remove('empty')
@@ -61,7 +62,7 @@ selectedListAutoComplete.addEventListener("click", function (e) {
         if (index > -1) {
             selectedListItems.splice(index, 1);
         }
-        renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        renderSelectedElements(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
     }
 });
 
@@ -120,7 +121,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
             }
         }
 
-        renderSelectedElement(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        renderSelectedElements(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
         inputAutoComplete.value = "";
         resultsListItems = [];
         renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
@@ -137,7 +138,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
 });
 
 // Render items for select list
-const renderSelectedElement = (listItems, liElementClass, ulElementClass) => {
+const renderSelectedElements = (listItems, liElementClass, ulElementClass) => {
     const shouldCreateDeleteIcon = true;
     renderElements(listItems, liElementClass, ulElementClass, shouldCreateDeleteIcon);
 }
