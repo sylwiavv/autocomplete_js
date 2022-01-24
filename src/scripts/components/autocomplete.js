@@ -163,3 +163,8 @@ const renderElements = (listItems, liElementClass, ulElementClass, shouldCreateD
         ul.appendChild(fragment);
     });
 }
+
+setTimeout(() => {
+    const loading = document.querySelector('.on-loading');
+    loading.classList.remove('on-loading');
+}, 800);
