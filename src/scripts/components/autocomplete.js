@@ -63,15 +63,15 @@ autoCompleteSelectedList.addEventListener("click", function (e) {
 
 let index = 0;
 inputAutoComplete.addEventListener("keydown", (e) => {
-    const allLi = document.querySelectorAll('.result-item__autocomplete');
-    const liElementsLength = allLi.length;
+    const liElements = document.querySelectorAll('.autocomplete__result-item');
+    const liElementsLength = liElements.length;
     let previousElement;
     let actualElement;
     // arrow down
     if (e.keyCode === 40 && liElementsLength > 0) {
         index++;
-        previousElement = allLi[index - 2];
-        actualElement = allLi[index - 1];
+        previousElement = liElements[index - 2];
+        actualElement = liElements[index - 1];
 
         if (index <= liElementsLength) {
             actualElement.classList.add('selected');
@@ -79,8 +79,8 @@ inputAutoComplete.addEventListener("keydown", (e) => {
                 previousElement.classList.remove('selected');
             }
         } else {
-            allLi[liElementsLength - 1].classList.remove('selected')
-            allLi[0].classList.add('selected');
+            liElements[liElementsLength - 1].classList.remove('selected')
+            liElements[0].classList.add('selected');
             index = 1;
         }
     }
@@ -88,15 +88,15 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     if (e.keyCode === 38 && liElementsLength > 0) {
         moveCursorToEnd(e, inputAutoComplete);
         index--;
-        previousElement = allLi[index];
-        actualElement = allLi[index - 1];
+        previousElement = liElements[index];
+        actualElement = liElements[index - 1];
 
         if (index > 0) {
             actualElement.classList.add('selected');
             previousElement.classList.remove('selected');
         } else {
-            allLi[0].classList.remove('selected');
-            allLi[liElementsLength - 1].classList.add('selected');
+            liElements[0].classList.remove('selected');
+            liElements[liElementsLength - 1].classList.add('selected');
             index = liElementsLength;
         }
     }
