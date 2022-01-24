@@ -12,7 +12,7 @@ body {
   color: $font-color;
 }
 
-html {
+html, body {
   height: 100%;
 }
 
@@ -24,16 +24,9 @@ ol, ul {
 }
 
 input {
-  border: 1px solid #c0c0c0;
-  //border-radius: 4px;
   border: none;
   outline: none;
   width: 100%;
-
-  &:focus,
-  &:hover {
-    border-color: #0a0a1e;
-  }
 
   &::placeholder {
     text-align: start;
@@ -49,10 +42,10 @@ input {
     height: 12px;
     background: $background-color;
     border-radius: 50%;
-    box-shadow: 20px 0 #00000022, -20px 0 #000000;
-    animation: d5 1s infinite linear alternate;
+    box-shadow: 20px 0 #0a2e7282, -20px 0 #1c3056;
+    animation: dots 1s infinite linear alternate;
     position: absolute;
-    top: 50%;
+    top: 16%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 11;
@@ -68,8 +61,9 @@ input {
     height: 100%;
   }
 }
-@keyframes d5 {
-  0% {box-shadow: 20px 0 #000000,-20px 0 #00000022;background: #000000}
-  33%{box-shadow: 20px 0 #000000,-20px 0 #00000022;background: #00000022}
-  66%{box-shadow: 20px 0 #00000022,-20px 0 #000000;background: #00000022}
+
+@keyframes dots {
+  0% {box-shadow: 20px 0 #1c3056,-20px 0 #0a2e7282;background: #1c3056}
+  33%{box-shadow: 20px 0 #1c3056,-20px 0 #0a2e7282;background: #0a2e7282}
+  66%{box-shadow: 20px 0 #0a2e7282,-20px 0 #1c3056;background: #0a2e7282}
 }

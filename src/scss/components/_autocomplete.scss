@@ -7,12 +7,14 @@
     margin: 0 auto;
     padding: $xs-indent;
     max-width: 600px;
+    animation: fade-out 1.4s 1;
   }
 
   &__title {
-    font-size: 32px;
-    font-weight: 500;
-    margin-bottom: 16px;
+    font-size: 36px;
+    font-weight: $font-weight__heavier;
+    margin-bottom: $l-indent;
+    margin-top: $xxl-indent + $l-indent;
   }
 
   &__wrapper {
@@ -23,9 +25,25 @@
     border: 1px solid $border-color;
     border-radius: 4px;
     padding: $s-indent;
+    transition: border-color, .3s;
+
+    &:hover,
+    &:focus {
+      border: 1px solid $selected-item-backgroundcolor;
+    }
   }
 
   &__input-wrapper {
     position: relative;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

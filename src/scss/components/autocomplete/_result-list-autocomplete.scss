@@ -1,13 +1,15 @@
 .autocomplete {
   &__result-list {
     background-color: #fff;
-    margin-bottom: $base-indent;
     border-radius: 4px;
+    border: 1px solid $border-color;
+    border-bottom: none;
+    border-top: none;
     box-shadow: 0px 10px 70px rgb(0 0 0 / 15%);
     margin-right: auto;
     transition: background-color .3s;
     position: absolute;
-    left: 8px;
+    left: 4px;
     width: 80%;
     max-width: $max-width;
   }
@@ -17,6 +19,12 @@
     font-size: 14px;
     padding: $s-indent $base-indent;
     position: relative;
+
+    &:first-child {
+      border-top: 1px solid $border-color;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+    }
 
     &:hover {
       background-color: #295fda0d;

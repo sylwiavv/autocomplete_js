@@ -2,7 +2,6 @@
   &__selected-list {
     display: flex;
     flex-wrap: wrap;
-    //flex-grow: 1;
     width: unset;
   }
 
@@ -33,7 +32,7 @@
       background-size: 24px;
       width: 30px;
       height: 30px;
-      transition: background-image, .4s;
+      transition: background-image, .2s;
       margin-left: $s-indent;
 
       &:focus,
