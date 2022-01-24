@@ -122,7 +122,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
         renderElements(resultsListItems, 'autocomplete__result-item', '.autocomplete__result-list');
     }
 
-    // numbers, letters, special char and backspace
+    // Move to first element on list when user presses any printable key or backspace
     if (e && e.key.length === 1 || e.keyCode === 8) {
         index = 1;
     }
