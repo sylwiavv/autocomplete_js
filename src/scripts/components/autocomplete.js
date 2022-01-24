@@ -127,6 +127,13 @@ inputAutoComplete.addEventListener("keydown", (e) => {
         index = 1;
     }
 
+    // Backspace
+    if (e.keyCode === 8) {
+        selectedListItems.pop();
+        console.log(selectedListItems);
+        renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
+    }
+
     // Set input value to selected element
     const selectedElement = document.querySelector('.selected');
     if (selectedElement) inputAutoComplete.value = selectedElement.dataset.value;
