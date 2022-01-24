@@ -1,22 +1,6 @@
 @import 'scss/global';
-@import "scss/fonts";
-@import "scss/components/result-list";
-@import "scss/components/selected-list";
-
-.input__autocomplete {
-  display: flex;
-  align-self: flex-start;
-  text-align: start;
-  padding: 4px 16px;
-  height: 48px;
-  width: 100%;
-}
-
-h1,
-.container {
-  color: #060d1c;
-  width: 100%;
-}
+@import "scss/variables/all-variables";
+@import "scss/components/autocomplete";
 
 .container {
   padding: 16px;
@@ -28,14 +12,8 @@ h1,
   flex-direction: column;
   align-items: center;
 
-  margin-top: 40px;
+  padding-top: 40px;
 }
-
-
-// Media queries
-$mobile: "(max-width: 375px)";
-$tablet: "(min-width: 768px) and (max-width: 1023px)";
-$desktop: "(min-width: 1024px)";
 
 //mobile
 @media #{$mobile} {

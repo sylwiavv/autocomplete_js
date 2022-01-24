@@ -1,0 +1,16 @@
+@import "input-autocomplete";
+@import "result-list-autocomplete";
+@import "selected-list-complete";
+
+.autocomplete {
+  &__container {
+    margin: 0 auto;
+    max-width: 600px;
+  }
+
+  &__title {
+    font-size: 32px;
+    font-weight: 500;
+    margin-bottom: 16px;
+  }
+}

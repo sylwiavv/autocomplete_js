@@ -1,0 +1,13 @@
+.autocomplete {
+  &__input {
+    display: flex;
+    align-self: flex-start;
+    text-align: start;
+    padding: $xs-indent $base-indent;
+    height: 40px;
+    background-color: $white-color;
+
+    max-width: $max-width;
+    width: 100%;
+  }
+}

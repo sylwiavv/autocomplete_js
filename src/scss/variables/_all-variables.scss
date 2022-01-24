@@ -10,14 +10,30 @@ $font-weight__bold: 700;
 
 // Font sizes
 $font-size__base: 16px;
-
 $font-size__xs: 8px;
 $font-size__s: $font-size__base;
 $font-size__m: 18px;
 $font-size__l: 24px;
 $font-size__xl: 30px;
 
-body {
-    font-family: $main-font;
-    color: #0a0a1e;
-}
+// Media queries
+$mobile: "(max-width: 375px)";
+$tablet: "(min-width: 768px) and (max-width: 1023px)";
+$desktop: "(min-width: 1024px)";
+
+// Indents
+$xs-indent: 4px;
+$xs-indent: 8px;
+$m-indent: 16px;
+$l-indent: 24px;
+$xl-indent: 32px;
+$xxl-indent: 40px;
+
+$base-indent: $m-indent;
+
+// Colors
+$white-color: #fff;
+
+
+//
+$max-width: 400px;
