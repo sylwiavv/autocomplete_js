@@ -67,7 +67,8 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     const liElementsLength = liElements.length;
     let previousElement;
     let actualElement;
-    // arrow down
+
+    // Arrow down
     if (e.keyCode === 40 && liElementsLength > 0) {
         index++;
         previousElement = liElements[index - 2];
@@ -84,7 +85,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
             index = 1;
         }
     }
-    // arrow up
+    // Arrow up
     if (e.keyCode === 38 && liElementsLength > 0) {
         moveCursorToEnd(e, inputAutoComplete);
         index--;
@@ -100,7 +101,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
             index = liElementsLength;
         }
     }
-    // esc
+    // Esc
     if (e.keyCode === 27) {
         inputAutoComplete.value = "";
         resultsListItems = [];
@@ -130,7 +131,6 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     // Backspace
     if (e.keyCode === 8) {
         selectedListItems.pop();
-        console.log(selectedListItems);
         renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
     }
 
@@ -139,7 +139,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     if (selectedElement) inputAutoComplete.value = selectedElement.dataset.value;
 });
 
-// Render items for select list
+// Render items for selected list
 const renderSelectedElements = (listItems, liElementClass, ulElementClass) => {
     const shouldCreateDeleteIcon = true;
     renderElements(listItems, liElementClass, ulElementClass, shouldCreateDeleteIcon);
