@@ -129,7 +129,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     }
 
     // Backspace
-    if (e.keyCode === 8) {
+    if (e.keyCode === 8 && inputAutoComplete.value === "") {
         selectedListItems.pop();
         renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
     }
