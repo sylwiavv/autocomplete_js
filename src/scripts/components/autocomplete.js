@@ -2,8 +2,8 @@ import { escapeRegExp, moveCursorToEnd } from '../helpers/helpers.js';
 import { technologies } from '../../data/technologies';
 
 const inputAutoComplete = document.querySelector('#input');
-const resultListAutoComplete = document.querySelector('.result-list__autocomplete');
-const selectedListAutoComplete = document.querySelector('.selected-list__autocomplete');
+const autoCompleteResultList = document.querySelector('.autocomplete__result-list');
+const autoCompleteSelectedList = document.querySelector('.autocomplete__selected-list');
 let resultsListItems = [];
 let selectedListItems = [];
 
@@ -22,47 +22,42 @@ inputAutoComplete.addEventListener("input", function (e) {
             }
         });
     }
-    renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
-    const resultItemsAutocomplete = document.querySelectorAll('.result-item__autocomplete');
+    renderElements(resultsListItems, 'autocomplete__result-item', '.autocomplete__result-list');
+    const resultItemsAutocomplete = document.querySelectorAll('.autocomplete__result-item');
     if (resultItemsAutocomplete[0]) {
         resultItemsAutocomplete[0].classList.add('selected');
     }
 });
 
 // Add element on click to select list
-resultListAutoComplete.addEventListener("click", function (e) {
-    if (e.target && e.target.matches("li.result-item__autocomplete")) {
+autoCompleteResultList.addEventListener("click", function (e) {
+    if (e.target && e.target.matches("li.autocomplete__result-item")) {
         const clickedElement = e.target;
         const clickedElementValue = e.target.dataset.value.trim();
-        const resultListAutocomplete = document.querySelectorAll('.result-item__autocomplete');
-        // Remove select class from first element
-        resultListAutocomplete[0].classList.remove('selected');
+        const autoCompleteResultList = document.querySelectorAll('.autocomplete__result-item');
+        autoCompleteResultList[0].classList.remove('selected');
         clickedElement.classList.add('selected');
         // Check if clicked element exists in selected list, if foundItems is empty add element
         const foundItems = selectedListItems.filter(selectedElement => selectedElement === clickedElementValue);
         if (foundItems.length === 0) {
             selectedListItems.push(clickedElementValue);
         }
-        renderSelectedElements(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
         inputAutoComplete.value = "";
         resultsListItems = [];
-        resultListAutoComplete.classList.remove('empty')
-        setTimeout(() => {
-            renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
-            resultListAutoComplete.classList.add('empty');
-        }, 200);
+        renderElements(resultsListItems, 'autocomplete__result-item', '.autocomplete__result-list');
     }
 });
 
 // Remove element from selected list
-selectedListAutoComplete.addEventListener("click", function (e) {
+autoCompleteSelectedList.addEventListener("click", function (e) {
     if (e.target && e.target.matches("span.close-icon")) {
         const clickedElement = e.target.parentNode.dataset.value;
         const index = selectedListItems.indexOf(clickedElement);
         if (index > -1) {
             selectedListItems.splice(index, 1);
         }
-        renderSelectedElements(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
     }
 });
 
@@ -109,7 +104,7 @@ inputAutoComplete.addEventListener("keydown", (e) => {
     if (e.keyCode === 27) {
         inputAutoComplete.value = "";
         resultsListItems = [];
-        renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
+        renderElements(resultsListItems, 'autocomplete__result-item', '.autocomplete__result-list');
     }
     // Enter
     if (e.keyCode === 13) {
@@ -121,10 +116,10 @@ inputAutoComplete.addEventListener("keydown", (e) => {
             }
         }
 
-        renderSelectedElements(selectedListItems, 'selected-item__autocomplete', '.selected-list__autocomplete');
+        renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
         inputAutoComplete.value = "";
         resultsListItems = [];
-        renderElements(resultsListItems, 'result-item__autocomplete', '.result-list__autocomplete');
+        renderElements(resultsListItems, 'autocomplete__result-item', '.autocomplete__result-list');
     }
 
     // numbers, letters, special char and backspace
