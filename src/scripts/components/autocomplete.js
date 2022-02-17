@@ -168,3 +168,51 @@ setTimeout(() => {
     const loading = document.querySelector('.on-loading');
     loading.classList.remove('on-loading');
 }, 800);
+
+
+// Class Approach
+const myList = document.querySelector('.autocomplete__class-container');
+const updateButton = document.querySelector('.update');
+
+class CrateList {
+    constructor(element) {
+        this.myList = element;
+        this.textList = technologies;
+        updateButton.addEventListener('click', () => {
+            console.log(this)
+            this.update();
+        })
+    }
+
+    // Make <li>text</text> tag
+    static createListItem (text) {
+        const li = document.createElement("li");
+        li.textContent = text;
+        return li;
+    }
+
+    update () {
+        // Remove all existing Li and Tags
+        while (this.myList.firstChild) {
+            this.myList.removeChild(this.myList.firstChild);
+        }
+
+        // Fill ul with li
+        for (const text of this.textList) {
+            this.myList.appendChild(CrateList.createListItem(text));
+        }
+    }
+
+    add (text) {
+        // this.textList.set(text);
+        this.textList.push(text);
+        this.update();
+    }
+
+    remove (index) {
+        this.textList.splice(index, 1);
+        this.update();
+    }
+}
+
+new CrateList(myList);
