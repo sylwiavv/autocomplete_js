@@ -67,3 +67,19 @@ input {
   33%{box-shadow: 20px 0 #1c3056,-20px 0 #0a2e7282;background: #0a2e7282}
   66%{box-shadow: 20px 0 #0a2e7282,-20px 0 #1c3056;background: #0a2e7282}
 }
+
+// Class
+
+button {
+  height: 32px;
+  width: 86px;
+  background-color: #1c3056;
+  border: 1px solid #1c3056;
+  border-radius: 4px;
+  color: #e9e9e9;
+  margin-top: 16px;
+}
+
+li:not(:last-child) {
+  margin-bottom: 8px;
+}
