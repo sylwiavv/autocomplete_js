@@ -80,6 +80,11 @@ button {
   margin-top: 16px;
 }
 
-li:not(:last-child) {
-  margin-bottom: 8px;
+.autocomplete__class-container {
+  display: flex;
+  flex-direction: column;
+
+  li:not(:last-child) {
+    margin-bottom: 8px;
+  }
 }

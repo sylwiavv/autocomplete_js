@@ -178,10 +178,7 @@ class CrateList {
     constructor(element) {
         this.myList = element;
         this.textList = technologies;
-        updateButton.addEventListener('click', () => {
-            console.log(this)
-            this.update();
-        })
+
     }
 
     // Make <li>text</text> tag
@@ -189,6 +186,26 @@ class CrateList {
         const li = document.createElement("li");
         li.textContent = text;
         return li;
+    }
+
+    // static createTitle () {
+    //     const title = document.createElement("h1");
+    //     title.classList.add("autocomplete__title");
+    //     title.textContent = "Autocomplete";
+    //     return title;
+    // }
+
+    static createInputItem () {
+        const input = document.createElement("input");
+
+        input.addEventListener('input', (e) => {
+            let inputValue = e.target.value;
+            // e.target.textContent = this.buttonText
+            // textArary.push(inputValue);
+            // console.log(textArary);
+        })
+
+        return input;
     }
 
     update () {
@@ -201,6 +218,7 @@ class CrateList {
         for (const text of this.textList) {
             this.myList.appendChild(CrateList.createListItem(text));
         }
+        // this.myList.appendChild(CrateList.createTitle());
     }
 
     add (text) {
@@ -216,3 +234,90 @@ class CrateList {
 }
 
 new CrateList(myList);
+//////////////////////////////////////////////////////////
+const container = document.querySelector('.autocomplete__container');
+
+class newAutocomplete {
+    constructor(mainArray, selectedArray, title) {
+        const input = document.createElement("input");
+        const ulList = document.createElement("ul");
+        ulList.classList.add('autocomplete__class-container');
+
+        this.ulList = ulList;
+        this.input = input;
+        this.title = title;
+
+        this.mainArrayy = mainArray;
+        this.selectedArray = selectedArray;
+        this.resultArray = [];
+        this.boundHandleClick = this.handleClick.bind(this);
+        this.connectedCallback();
+        this.updateTitle();
+        container.appendChild(input);
+        container.appendChild(ulList);
+    }
+
+    connectedCallback() {
+        this.input.addEventListener('input', this.boundHandleClick);
+    }
+
+    updateTitle() {
+        const titleTag = document.createElement("h1");
+        titleTag.classList.add('autocomplete__title');
+        titleTag.textContent = this.title;
+        container.appendChild(titleTag);
+        console.log(this.title);
+    }
+
+    handleClick(e) {
+        let inputValue = e.target.value;
+        this.resultArray = [];
+        this.ulList.textContent = '';
+
+        this.resultArray.push(inputValue);
+
+        this.mainArrayy.forEach((technology) => {
+            const technologyItem = technology.toLowerCase().replace(/\s/g, "");
+            const matchItems = technologyItem.match(escapeRegExp(inputValue.toLowerCase().replace(/\s/g, '')));
+            // If element does not match then match method returns null
+            if (matchItems !== null) {
+                this.resultArray.push(technology);
+            }
+        });
+
+        this.renderResultArray(this.resultArray);
+
+        if (inputValue === '') {
+            this.resultArray = [];
+            this.ulList.textContent = '';
+        }
+    }
+
+    renderResultArray(text) {
+        text.forEach(listElement => {
+            const fragment = document.createDocumentFragment();
+            const li = document.createElement('li');
+
+            fragment.appendChild(li);
+            li.textContent = listElement;
+            this.ulList.appendChild(fragment);
+            this.ulList.appendChild(li);
+        })
+    }
+}
+
+const names = [
+    "Paulina",
+    "Kacper",
+    "Sebastian"
+];
+
+const animals = [
+    "Luna",
+    "Kot",
+    "Pies"
+];
+
+new newAutocomplete(technologies, selectedListItems, "Technologies");
+new newAutocomplete(names, selectedListItems, "Names");
+new newAutocomplete(animals, selectedListItems, "Animals");
