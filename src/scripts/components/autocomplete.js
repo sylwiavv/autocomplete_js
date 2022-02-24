@@ -377,21 +377,24 @@ class newAutocomplete {
 
     eventsHandlers() {
         this.input.addEventListener('input', this.inputTyping);
-
         this.ulListResult.addEventListener('click', (e) => {
-            console.log(e.target.matches("autocomplete__result-item"))
-            // && e.target.matches("autocomplete__result-item")
-            if (e.target) {
-                this.addElementOnClick(e);
-            }
+            if (e.target) { this.addElementOnClick(e); }
+        });
+        this.ulListSelected.addEventListener('click', (e) => {
+            if (e.target && e.target.matches("span.close-icon")) { this.removeElementOnClick(e); }
         });
     }
 
-    addElementOnClick(e) {
-        const clickedElement = e.target;
-        const clickedElementValue = e.target.dataset.value.trim();
+    removeElementOnClick(e) {
+        const clickedElement = e.target.parentNode.dataset.value;
+        const index = this.selectedArray.indexOf(clickedElement);
 
-        const autoCompleteResultList = document.querySelectorAll('.autocomplete__result-item');
+        this.selectedArray.splice(index, 1);
+        this.renderSelectedArray(this.selectedArray);
+    }
+
+    addElementOnClick(e) {
+        const clickedElementValue = e.target.dataset.value.trim();
 
         const foundItems = this.selectedArray.filter(selectedElement => selectedElement === clickedElementValue);
         if (foundItems.length === 0) {
@@ -446,11 +449,14 @@ class newAutocomplete {
             const fragment = document.createDocumentFragment();
             const li = document.createElement('li');
             li.classList.add('autocomplete__selected-item');
+            const span = document.createElement('span');
 
             fragment.appendChild(li);
             li.textContent = listElement;
             li.setAttribute('data-value', listElement);
             li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
+            span.classList.add('close-icon');
+            li.appendChild(span);
             this.ulListSelected.appendChild(fragment);
             this.ulListSelected.appendChild(li);
             this.div.appendChild(this.ulListSelected);
