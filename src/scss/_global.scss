@@ -80,11 +80,18 @@ button {
   margin-top: 16px;
 }
 
-.autocomplete__class-container {
-  display: flex;
-  flex-direction: column;
+.autocomplete__container-second {
+  input {
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    height: 32px;
+    padding: 4px 8px;
+    margin-bottom: 16px;
+  }
 
-  li:not(:last-child) {
-    margin-bottom: 8px;
+  ul {
+    li:not(:last-child) {
+      margin-bottom: 8px;
+    }
   }
 }
