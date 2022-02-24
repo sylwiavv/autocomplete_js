@@ -346,32 +346,64 @@ class AnimalAutocomplete {
 const container = document.querySelector('.autocomplete__container-second');
 
 class newAutocomplete {
-    constructor(mainArray, selectedArray, title) {
+    constructor(mainArray, title) {
         const input = document.createElement("input");
         const div = document.createElement("div");
         div.classList.add('autocomplete__class-container');
 
         const ulListResult = document.createElement("ul");
-        ulListResult.classList.add('autocomplete__result-list')
+        ulListResult.classList.add('autocomplete__result-list');
+
+        const ulListSelected = document.createElement("ul");
+        ulListSelected.classList.add('autocomplete__selected-list');
 
         this.div = div;
         this.input = input;
         this.title = title;
         this.ulListResult = ulListResult;
+        this.ulListSelected = ulListSelected;
 
         this.mainArrayy = mainArray;
-        this.selectedArray = selectedArray;
+
         this.resultArray = [];
-        this.inputTyping = this.handleClick.bind(this);
-        this.connectedCallback();
+        this.selectedArray = [];
+        this.inputTyping = this.handleInput.bind(this);
+        this.eventsHandlers();
         this.updateTitle();
 
         div.appendChild(input);
         container.appendChild(div);
     }
 
-    connectedCallback() {
+    eventsHandlers() {
         this.input.addEventListener('input', this.inputTyping);
+
+        this.ulListResult.addEventListener('click', (e) => {
+            console.log(e.target.matches("autocomplete__result-item"))
+            // && e.target.matches("autocomplete__result-item")
+            if (e.target) {
+                this.addElementOnClick(e);
+            }
+        });
+    }
+
+    addElementOnClick(e) {
+        const clickedElement = e.target;
+        const clickedElementValue = e.target.dataset.value.trim();
+
+        const autoCompleteResultList = document.querySelectorAll('.autocomplete__result-item');
+
+        const foundItems = this.selectedArray.filter(selectedElement => selectedElement === clickedElementValue);
+        if (foundItems.length === 0) {
+            this.selectedArray.push(clickedElementValue);
+        }
+
+        this.renderSelectedArray(this.selectedArray);
+
+        this.input.value = "";
+        this.resultArray = [];
+
+        this.renderResultArray(this.resultArray);
     }
 
     updateTitle() {
@@ -382,7 +414,7 @@ class newAutocomplete {
         console.log(this.title);
     }
 
-    handleClick(e) {
+    handleInput(e) {
         let inputValue = e.target.value;
         this.resultArray = [];
         this.ulListResult.textContent = '';
@@ -399,6 +431,8 @@ class newAutocomplete {
         });
 
         this.renderResultArray(this.resultArray);
+        console.log(this.resultArray)
+        console.log(this.selectedArray)
 
         if (inputValue === '') {
             this.resultArray = [];
@@ -406,13 +440,34 @@ class newAutocomplete {
         }
     }
 
-    renderResultArray(text) {
-        text.forEach(listElement => {
+    renderSelectedArray(array) {
+        this.ulListSelected.textContent = '';
+        array.forEach(listElement => {
             const fragment = document.createDocumentFragment();
             const li = document.createElement('li');
+            li.classList.add('autocomplete__selected-item');
 
             fragment.appendChild(li);
             li.textContent = listElement;
+            li.setAttribute('data-value', listElement);
+            li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
+            this.ulListSelected.appendChild(fragment);
+            this.ulListSelected.appendChild(li);
+            this.div.appendChild(this.ulListSelected);
+        })
+    }
+
+    renderResultArray(text) {
+        this.ulListResult.textContent = '';
+        text.forEach(listElement => {
+            const fragment = document.createDocumentFragment();
+            const li = document.createElement('li');
+            li.classList.add('autocomplete__result-item');
+
+            fragment.appendChild(li);
+            li.textContent = listElement;
+            li.setAttribute('data-value', listElement);
+            li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
             this.ulListResult.appendChild(fragment);
             this.ulListResult.appendChild(li);
             this.div.appendChild(this.ulListResult);
@@ -420,6 +475,6 @@ class newAutocomplete {
     }
 }
 
-new newAutocomplete(technologies, selectedListItems, "Technologies");
-new newAutocomplete(names, selectedListItems, "Names");
-new newAutocomplete(animals, selectedListItems, "Animals");
+new newAutocomplete(technologies, "Technologies");
+new newAutocomplete(names, "Names");
+new newAutocomplete(animals, "Animals");
