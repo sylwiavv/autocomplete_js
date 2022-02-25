@@ -9,4 +9,11 @@ function moveCursorToEnd(e, inputAutoComplete) {
     }, 0)
 }
 
-export { escapeRegExp, moveCursorToEnd };
+const onLoad = () => {
+    setTimeout(() => {
+        const loading = document.querySelector('.on-loading');
+        loading.classList.remove('on-loading');
+    }, 800);
+}
+
+export { escapeRegExp, moveCursorToEnd, onLoad };
