@@ -121,7 +121,7 @@ class Autocomplete {
             this.pointer = 1;
         }
 
-        const selectedElement = document.querySelector('.selected');
+        const selectedElement = this.ulListResult.querySelector('.selected');
         if (selectedElement) this.input.value = selectedElement.dataset.value;
     }
 
