@@ -170,10 +170,9 @@ class Autocomplete {
         this.div.appendChild(titleTag);
     }
 
-    handleInput(e) {
-        let inputValue = e.target.value;
+    handleInput() {
+        let inputValue = this.input.value;
         this.resultArray = [];
-        this.ulListResult.textContent = '';
 
         this.resultArray.push(inputValue);
 
