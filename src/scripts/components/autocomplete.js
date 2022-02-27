@@ -22,13 +22,18 @@ class Autocomplete {
         this.ulListResult = ulListResult;
         this.ulListSelected = ulListSelected;
 
+        this.placeholder = 'Insert';
+        this.input.placeholder = this.placeholder;
+
         this.pointer = 0;
 
         this.mainArrayy = mainArray;
 
         this.resultArray = [];
         this.selectedArray = [];
+
         this.inputTyping = this.handleInput.bind(this);
+
         this.eventsHandlers();
         this.updateTitle();
 
