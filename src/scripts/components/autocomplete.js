@@ -54,6 +54,20 @@ class Autocomplete {
         this.input.addEventListener('keydown', (e) => {
             this.handleKeys(e)
         });
+
+        this.input.addEventListener('click', (e) => {
+            this.closeResultList();
+        });
+    }
+
+    closeResultList() {
+        this.input.placeholder = '';
+
+        this.input.addEventListener('focusout', () => {
+            this.input.placeholder = this.placeholder;
+            this.resultArray = [];
+            this.renderResultArray(this.resultArray);
+        });
     }
 
     handleKeys(e) {
