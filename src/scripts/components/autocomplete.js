@@ -58,7 +58,6 @@ class Autocomplete {
         let actualElement;
 
         if (e.keyCode === ARROW_DOWN ) {
-            console.log(this.input.value)
             this.pointer++;
             previousElement = liElements[this.pointer - 2];
             actualElement = liElements[this.pointer - 1];
@@ -99,7 +98,6 @@ class Autocomplete {
 
         if (e.keyCode === ENTER) {
             let currentInputValue = this.input.value.trim();
-            console.log('currentInputValue')
             if (currentInputValue !== "") {
                 const foundItems = this.selectedArray.filter(selectedElement => selectedElement === currentInputValue);
                 if (foundItems.length === 0) {
@@ -177,7 +175,6 @@ class Autocomplete {
         }
 
         const resultItemsAutocomplete = this.ulListResult.querySelectorAll('.autocomplete__result-item');
-        console.log(resultItemsAutocomplete)
         if (resultItemsAutocomplete[0]) {
             resultItemsAutocomplete[0].classList.add('selected');
         }
@@ -193,7 +190,6 @@ class Autocomplete {
 
             fragment.appendChild(li);
             li.textContent = listElement;
-            console.log(listElement)
             li.setAttribute('data-value', listElement);
             li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
             span.classList.add('close-icon');
@@ -213,7 +209,6 @@ class Autocomplete {
 
             fragment.appendChild(li);
             li.textContent = listElement;
-            console.log(listElement)
             li.setAttribute('data-value', listElement);
             li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
             this.ulListResult.appendChild(fragment);
