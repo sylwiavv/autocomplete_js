@@ -7,8 +7,8 @@ const container = document.querySelector('.autocomplete__container-second');
 class Autocomplete {
     constructor(mainArray, title) {
         const input = document.createElement("input");
-        const div = document.createElement("div");
-        div.classList.add('autocomplete__class-container');
+        const wrapper = document.createElement("div");
+        wrapper.classList.add('autocomplete__class-container');
 
         const ulListResult = document.createElement("ul");
         ulListResult.classList.add('autocomplete__result-list');
@@ -16,7 +16,7 @@ class Autocomplete {
         const ulListSelected = document.createElement("ul");
         ulListSelected.classList.add('autocomplete__selected-list');
 
-        this.div = div;
+        this.wrapper = wrapper;
         this.input = input;
         this.title = title;
         this.ulListResult = ulListResult;
@@ -167,7 +167,7 @@ class Autocomplete {
         const titleTag = document.createElement("h1");
         titleTag.classList.add('autocomplete__title');
         titleTag.textContent = this.title;
-        this.div.appendChild(titleTag);
+        this.wrapper.appendChild(titleTag);
     }
 
     handleInput() {
@@ -214,7 +214,7 @@ class Autocomplete {
             li.appendChild(span);
             this.ulListSelected.appendChild(fragment);
             this.ulListSelected.appendChild(li);
-            this.div.appendChild(this.ulListSelected);
+            this.wrapper.appendChild(this.ulListSelected);
         })
     }
 
@@ -231,7 +231,7 @@ class Autocomplete {
             li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
             this.ulListResult.appendChild(fragment);
             this.ulListResult.appendChild(li);
-            this.div.appendChild(this.ulListResult);
+            this.wrapper.appendChild(this.ulListResult);
         })
     }
 }
