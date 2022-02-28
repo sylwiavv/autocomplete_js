@@ -36,38 +36,40 @@ class Autocomplete {
 
         this.eventsHandlers();
         this.updateTitle();
-
-        div.appendChild(input);
-        container.appendChild(div);
+        wrapper.appendChild(input);
+        container.appendChild(wrapper);
     }
 
     eventsHandlers() {
         this.input.addEventListener('input', this.inputTyping);
         this.ulListResult.addEventListener('click', (e) => {
-            if (e.target) { this.addElementOnClick(e); }
+            if (e.target) {
+                this.addElementOnClick(e);
+            }
         });
 
         this.ulListSelected.addEventListener('click', (e) => {
-            if (e.target && e.target.matches("span.close-icon")) { this.removeElementOnClick(e); }
+            if (e.target && e.target.matches("span.close-icon")) {
+                this.removeElementOnClick(e);
+            }
         });
 
         this.input.addEventListener('keydown', (e) => {
             this.handleKeys(e)
         });
 
-        this.input.addEventListener('click', (e) => {
+        this.wrapper.addEventListener('mouseleave', () => {
             this.closeResultList();
         });
     }
 
     closeResultList() {
-        this.input.placeholder = '';
+        this.input.value = '';
+        this.input.placeholder = this.placeholder;
 
-        this.input.addEventListener('focusout', () => {
-            this.input.placeholder = this.placeholder;
-            this.resultArray = [];
-            this.renderResultArray(this.resultArray);
-        });
+        this.resultArray = [];
+        this.renderResultArray(this.resultArray);
+        this.ulListResult.remove();
     }
 
     handleKeys(e) {
