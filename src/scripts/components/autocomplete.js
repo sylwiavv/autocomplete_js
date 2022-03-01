@@ -160,6 +160,11 @@ class Autocomplete {
             this.pointer = 1;
         }
 
+        if (e.keyCode === BACKSPACE && this.input.value === "") {
+            this.selectedArray.pop();
+            this.renderSelectedList(this.selectedArray);
+        }
+
         const selectedElement = this.ulListResult.querySelector('.selected');
         if (selectedElement) this.input.value = selectedElement.dataset.value;
     }
