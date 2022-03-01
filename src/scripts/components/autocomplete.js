@@ -91,7 +91,7 @@ class Autocomplete {
         this.input.placeholder = this.placeholder;
 
         this.resultArray = [];
-        this.renderResultArray(this.resultArray);
+        this.renderResultList(this.resultArray);
         this.ulListResult.remove();
     }
 
@@ -137,7 +137,7 @@ class Autocomplete {
         if (e.keyCode === ESC) {
             this.input.value = "";
             this.resultArray = [];
-            this.renderResultArray(this.resultArray);
+            this.renderResultList(this.resultArray);
         }
 
         if (e.keyCode === ENTER) {
@@ -149,10 +149,10 @@ class Autocomplete {
                 }
             }
 
-            this.renderSelectedArray(this.selectedArray);
+            this.renderSelectedList(this.selectedArray);
             this.input.value = "";
             this.resultArray = [];
-            this.renderResultArray(this.resultArray);
+            this.renderResultList(this.resultArray);
         }
 
         // Move to first element on list when user presses any printable key or backspace
@@ -169,7 +169,7 @@ class Autocomplete {
         const index = this.selectedArray.indexOf(clickedElement);
 
         this.selectedArray.splice(index, 1);
-        this.renderSelectedArray(this.selectedArray);
+        this.renderSelectedList(this.selectedArray);
     }
 
     addElementOnClick(e) {
@@ -180,15 +180,15 @@ class Autocomplete {
             this.selectedArray.push(clickedElementValue);
         }
 
-        this.renderSelectedArray(this.selectedArray);
+        this.renderSelectedList(this.selectedArray);
 
         this.input.value = "";
         this.resultArray = [];
 
-        this.renderResultArray(this.resultArray);
+        this.renderResultList(this.resultArray);
     }
 
-    updateTitle() {
+    renderTitle() {
         const titleTag = document.createElement("h1");
         titleTag.classList.add('autocomplete__title');
         titleTag.textContent = this.title;
@@ -209,7 +209,7 @@ class Autocomplete {
             }
         });
 
-        this.renderResultArray(this.resultArray);
+        this.renderResultList(this.resultArray);
 
         if (inputValue === "") {
             this.resultArray = [];
@@ -222,18 +222,18 @@ class Autocomplete {
         }
     }
 
-    renderSelectedArray(array) {
-        this.ulListSelected.textContent = '';
-        array.forEach(listElement => {
+    renderSelectedList(selectedItems) {
+        this.ulListSelected.textContent = "";
+        selectedItems.forEach(selectedItems => {
             const fragment = document.createDocumentFragment();
             const li = document.createElement('li');
             li.classList.add('autocomplete__selected-item');
             const span = document.createElement('span');
 
             fragment.appendChild(li);
-            li.textContent = listElement;
-            li.setAttribute('data-value', listElement);
-            li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
+            li.textContent = selectedItems;
+            li.setAttribute('data-value', selectedItems);
+            li.innerHTML = selectedItems.replaceAll(" ", '&nbsp;');
             span.classList.add('close-icon');
             li.appendChild(span);
             this.ulListSelected.appendChild(fragment);
@@ -241,17 +241,17 @@ class Autocomplete {
         })
     }
 
-    renderResultArray(text) {
-        this.ulListResult.textContent = '';
-        text.forEach(listElement => {
+    renderResultList(resultItems) {
+        this.ulListResult.textContent = "";
+        resultItems.forEach(resultItem => {
             const fragment = document.createDocumentFragment();
             const li = document.createElement('li');
             li.classList.add('autocomplete__result-item');
 
             fragment.appendChild(li);
-            li.textContent = listElement;
-            li.setAttribute('data-value', listElement);
-            li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
+            li.textContent = resultItem;
+            li.setAttribute('data-value', resultItem);
+            li.innerHTML = resultItem.replaceAll(" ", '&nbsp;');
             this.ulListResult.appendChild(fragment);
             this.ulListResult.appendChild(li);
             this.inputWrapper.appendChild(this.ulListResult);
