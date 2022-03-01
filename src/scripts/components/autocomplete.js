@@ -2,13 +2,21 @@ import { escapeRegExp, moveCursorToEnd, onLoad } from '../helpers/helpers.js';
 import { ESC, ENTER, BACKSPACE, ARROW_DOWN, ARROW_UP } from '../utils/consts.js';
 import { technologies, names, animals } from '../../data/data';
 
-const container = document.querySelector('.autocomplete__container-second');
+const container = document.querySelector('.autocomplete__container');
 
 class Autocomplete {
     constructor(mainArray, title) {
         const input = document.createElement("input");
-        const wrapper = document.createElement("div");
-        wrapper.classList.add('autocomplete__class-container');
+        input.classList.add('autocomplete__input');
+
+        const inputMainWrapper = document.createElement("div");
+        inputMainWrapper.classList.add('autocomplete__wrapper');
+
+        const wrapperSection = document.createElement("div");
+        wrapperSection.classList.add('autocomplete__section');
+
+        const inputWrapper = document.createElement("div");
+        inputWrapper.classList.add('autocomplete__input-wrapper');
 
         const ulListResult = document.createElement("ul");
         ulListResult.classList.add('autocomplete__result-list');
@@ -16,7 +24,9 @@ class Autocomplete {
         const ulListSelected = document.createElement("ul");
         ulListSelected.classList.add('autocomplete__selected-list');
 
-        this.wrapper = wrapper;
+        this.wrapperSection = wrapperSection;
+        this.inputWrapper = inputWrapper;
+        this.inputMainWrapper = inputMainWrapper;
         this.input = input;
         this.title = title;
         this.ulListResult = ulListResult;
@@ -54,13 +64,24 @@ class Autocomplete {
             }
         });
 
-        this.input.addEventListener('keydown', (e) => {
-            this.handleKeys(e)
+        this.wrapperSection.addEventListener('mouseleave', () => {
+            // this.closeResultList();
         });
+    }
 
-        this.wrapper.addEventListener('mouseleave', () => {
-            this.closeResultList();
-        });
+    renderHtml() {
+        this.updateTitle();
+
+        container.appendChild(this.wrapperSection);
+        container.appendChild(this.inputWrapper);
+
+        this.inputWrapper.appendChild(this.input);
+        this.inputWrapper.appendChild(this.ulListResult);
+
+        this.wrapperSection.appendChild(this.inputMainWrapper);
+        this.inputMainWrapper.appendChild(this.ulListSelected);
+        this.wrapperSection.appendChild(this.inputWrapper);
+        this.inputMainWrapper.appendChild(this.inputWrapper);
     }
 
     closeResultList() {
@@ -169,7 +190,7 @@ class Autocomplete {
         const titleTag = document.createElement("h1");
         titleTag.classList.add('autocomplete__title');
         titleTag.textContent = this.title;
-        this.wrapper.appendChild(titleTag);
+        this.wrapperSection.appendChild(titleTag);
     }
 
     handleInput() {
@@ -216,7 +237,6 @@ class Autocomplete {
             li.appendChild(span);
             this.ulListSelected.appendChild(fragment);
             this.ulListSelected.appendChild(li);
-            this.wrapper.appendChild(this.ulListSelected);
         })
     }
 
@@ -233,7 +253,7 @@ class Autocomplete {
             li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
             this.ulListResult.appendChild(fragment);
             this.ulListResult.appendChild(li);
-            this.wrapper.appendChild(this.ulListResult);
+            this.inputWrapper.appendChild(this.ulListResult);
         })
     }
 }
