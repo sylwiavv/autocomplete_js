@@ -45,9 +45,7 @@ class Autocomplete {
         this.inputTyping = this.handleInput.bind(this);
 
         this.eventsHandlers();
-        this.updateTitle();
-        wrapper.appendChild(input);
-        container.appendChild(wrapper);
+        this.renderHtml()
     }
 
     eventsHandlers() {
