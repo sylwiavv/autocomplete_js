@@ -1,170 +1,271 @@
-import { escapeRegExp, moveCursorToEnd } from '../helpers/helpers.js';
-import { technologies } from '../../data/technologies';
+import { escapeRegExp, moveCursorToEnd, onLoad } from '../helpers/helpers.js';
+import { ESC, ENTER, BACKSPACE, ARROW_DOWN, ARROW_UP } from '../utils/consts.js';
+import { technologies, names, animals } from '../../data/data';
 
-const inputAutoComplete = document.querySelector('#input');
-const autoCompleteResultList = document.querySelector('.autocomplete__result-list');
-const autoCompleteSelectedList = document.querySelector('.autocomplete__selected-list');
-let resultsListItems = [];
-let selectedListItems = [];
+const container = document.querySelector('.autocomplete__container');
 
-inputAutoComplete.addEventListener("input", function (e) {
-    let inputValue = e.target.value;
-    resultsListItems = [];
-    // If user enters empty string do nothing
-    if (inputValue.trim() !== "") {
-        resultsListItems.push(inputValue);
-        technologies.forEach((technology) => {
-            const technologyItem = technology.toLowerCase().replace(/\s/g, "");
-            const matchItems = technologyItem.match(escapeRegExp(inputValue.toLowerCase().replace(/\s/g, '')));
-            // If element does not match then match method returns null
-            if (matchItems !== null) {
-                resultsListItems.push(technology);
+class Autocomplete {
+    constructor(mainArray, title) {
+        const input = document.createElement("input");
+        input.classList.add('autocomplete__input');
+
+        const inputMainWrapper = document.createElement("div");
+        inputMainWrapper.classList.add('autocomplete__wrapper');
+
+        const wrapperSection = document.createElement("div");
+        wrapperSection.classList.add('autocomplete__section');
+
+        const inputWrapper = document.createElement("div");
+        inputWrapper.classList.add('autocomplete__input-wrapper');
+
+        const ulListResult = document.createElement("ul");
+        ulListResult.classList.add('autocomplete__result-list');
+
+        const ulListSelected = document.createElement("ul");
+        ulListSelected.classList.add('autocomplete__selected-list');
+
+        this.wrapperSection = wrapperSection;
+        this.inputWrapper = inputWrapper;
+        this.inputMainWrapper = inputMainWrapper;
+        this.input = input;
+        this.title = title;
+        this.ulListResult = ulListResult;
+        this.ulListSelected = ulListSelected;
+
+        this.placeholder = `Search for ${this.title.toLowerCase()}`;
+        this.input.placeholder = this.placeholder;
+
+        this.pointer = 0;
+
+        this.mainArrayy = mainArray;
+
+        this.resultArray = [];
+        this.selectedArray = [];
+
+        this.inputTyping = this.handleInput.bind(this);
+
+        this.eventsHandlers();
+        this.renderHtml()
+    }
+
+    eventsHandlers() {
+        this.input.addEventListener('input', this.inputTyping);
+        this.input.addEventListener('keydown', (e) => {
+            this.handleKeys(e)
+        });
+
+        this.ulListResult.addEventListener('click', (e) => {
+            if (e.target) {
+                this.addElementOnClick(e);
             }
         });
-    }
-    renderElements(resultsListItems, 'autocomplete__result-item', '.autocomplete__result-list');
-    const resultItemsAutocomplete = document.querySelectorAll('.autocomplete__result-item');
-    if (resultItemsAutocomplete[0]) {
-        resultItemsAutocomplete[0].classList.add('selected');
-    }
-});
 
-// Add element on click to select list
-autoCompleteResultList.addEventListener("click", function (e) {
-    if (e.target && e.target.matches("li.autocomplete__result-item")) {
-        const clickedElement = e.target;
-        const clickedElementValue = e.target.dataset.value.trim();
-        const autoCompleteResultList = document.querySelectorAll('.autocomplete__result-item');
-        autoCompleteResultList[0].classList.remove('selected');
-        clickedElement.classList.add('selected');
-        // Check if clicked element exists in selected list, if foundItems is empty add element
-        const foundItems = selectedListItems.filter(selectedElement => selectedElement === clickedElementValue);
-        if (foundItems.length === 0) {
-            selectedListItems.push(clickedElementValue);
+        this.ulListSelected.addEventListener('click', (e) => {
+            if (e.target && e.target.matches("span.close-icon")) {
+                this.removeElementOnClick(e);
+            }
+        });
+
+        this.wrapperSection.addEventListener('mouseleave', () => {
+            this.closeResultList();
+        });
+    }
+
+    renderHtml() {
+        this.renderTitle();
+
+        container.appendChild(this.wrapperSection);
+        container.appendChild(this.inputWrapper);
+
+        this.inputWrapper.appendChild(this.input);
+        this.inputWrapper.appendChild(this.ulListResult);
+
+        this.wrapperSection.appendChild(this.inputMainWrapper);
+        this.inputMainWrapper.appendChild(this.ulListSelected);
+        this.wrapperSection.appendChild(this.inputWrapper);
+        this.inputMainWrapper.appendChild(this.inputWrapper);
+    }
+
+    closeResultList() {
+        this.input.value = "";
+        this.input.placeholder = this.placeholder;
+
+        this.resultArray = [];
+        this.renderResultList(this.resultArray);
+        this.ulListResult.remove();
+    }
+
+    handleKeys(e) {
+        const liElements = this.ulListResult.querySelectorAll('.autocomplete__result-item');
+        const liElementsLength = liElements.length;
+        let previousElement;
+        let actualElement;
+
+        if (e.keyCode === ARROW_DOWN ) {
+            this.pointer++;
+            previousElement = liElements[this.pointer - 2];
+            actualElement = liElements[this.pointer - 1];
+
+            if (this.pointer <= liElementsLength) {
+                actualElement.classList.add('selected');
+                if (this.pointer > 1) {
+                    previousElement.classList.remove('selected');
+                }
+            } else {
+                liElements[liElementsLength - 1].classList.remove('selected')
+                liElements[0].classList.add('selected');
+                this.pointer = 1;
+            }
         }
-        renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
-        inputAutoComplete.value = "";
-        resultsListItems = [];
-        renderElements(resultsListItems, 'autocomplete__result-item', '.autocomplete__result-list');
-    }
-});
 
-// Remove element from selected list
-autoCompleteSelectedList.addEventListener("click", function (e) {
-    if (e.target && e.target.matches("span.close-icon")) {
-        const clickedElement = e.target.parentNode.dataset.value;
-        const index = selectedListItems.indexOf(clickedElement);
-        if (index > -1) {
-            selectedListItems.splice(index, 1);
-        }
-        renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
-    }
-});
+        if (e.keyCode === ARROW_UP && liElementsLength > 0) {
+            moveCursorToEnd(e, this.input);
+            this.pointer--;
+            previousElement = liElements[this.pointer];
+            actualElement = liElements[this.pointer - 1];
 
-let index = 0;
-inputAutoComplete.addEventListener("keydown", (e) => {
-    const liElements = document.querySelectorAll('.autocomplete__result-item');
-    const liElementsLength = liElements.length;
-    let previousElement;
-    let actualElement;
-
-    // Arrow down
-    if (e.keyCode === 40 && liElementsLength > 0) {
-        index++;
-        previousElement = liElements[index - 2];
-        actualElement = liElements[index - 1];
-
-        if (index <= liElementsLength) {
-            actualElement.classList.add('selected');
-            if (index > 1) {
+            if (this.pointer > 0) {
+                actualElement.classList.add('selected');
                 previousElement.classList.remove('selected');
-            }
-        } else {
-            liElements[liElementsLength - 1].classList.remove('selected')
-            liElements[0].classList.add('selected');
-            index = 1;
-        }
-    }
-    // Arrow up
-    if (e.keyCode === 38 && liElementsLength > 0) {
-        moveCursorToEnd(e, inputAutoComplete);
-        index--;
-        previousElement = liElements[index];
-        actualElement = liElements[index - 1];
-
-        if (index > 0) {
-            actualElement.classList.add('selected');
-            previousElement.classList.remove('selected');
-        } else {
-            liElements[0].classList.remove('selected');
-            liElements[liElementsLength - 1].classList.add('selected');
-            index = liElementsLength;
-        }
-    }
-    // Esc
-    if (e.keyCode === 27) {
-        inputAutoComplete.value = "";
-        resultsListItems = [];
-        renderElements(resultsListItems, 'autocomplete__result-item', '.autocomplete__result-list');
-    }
-    // Enter
-    if (e.keyCode === 13) {
-        let currentInputValue = inputAutoComplete.value.trim();
-        if (currentInputValue !== "") {
-            const foundItems = selectedListItems.filter(selectedElement => selectedElement === currentInputValue);
-            if (foundItems.length === 0) {
-                selectedListItems.push(currentInputValue);
+            } else {
+                liElements[0].classList.remove('selected');
+                liElements[liElementsLength - 1].classList.add('selected');
+                this.pointer = liElementsLength;
             }
         }
 
-        renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
-        inputAutoComplete.value = "";
-        resultsListItems = [];
-        renderElements(resultsListItems, 'autocomplete__result-item', '.autocomplete__result-list');
+        if (e.keyCode === ESC) {
+            this.input.value = "";
+            this.resultArray = [];
+            this.renderResultList(this.resultArray);
+        }
+
+        if (e.keyCode === ENTER) {
+            let currentInputValue = this.input.value.trim();
+            if (currentInputValue !== "") {
+                const foundItems = this.selectedArray.filter(selectedElement => selectedElement === currentInputValue);
+                if (foundItems.length === 0) {
+                    this.selectedArray.push(currentInputValue);
+                }
+            }
+
+            this.renderSelectedList(this.selectedArray);
+            this.input.value = "";
+            this.resultArray = [];
+            this.renderResultList(this.resultArray);
+        }
+
+        // Move to first element on list when user presses any printable key or backspace
+        if (e && e.key.length === 1 || e.keyCode === BACKSPACE) {
+            this.pointer = 1;
+        }
+
+        if (e.keyCode === BACKSPACE && this.input.value === "") {
+            this.selectedArray.pop();
+            this.renderSelectedList(this.selectedArray);
+        }
+
+        const selectedElement = this.ulListResult.querySelector('.selected');
+        if (selectedElement) this.input.value = selectedElement.dataset.value;
     }
 
-    // Move to first element on list when user presses any printable key or backspace
-    if (e && e.key.length === 1 || e.keyCode === 8) {
-        index = 1;
+    removeElementOnClick(e) {
+        const clickedElement = e.target.parentNode.dataset.value;
+        const index = this.selectedArray.indexOf(clickedElement);
+
+        this.selectedArray.splice(index, 1);
+        this.renderSelectedList(this.selectedArray);
     }
 
-    // Backspace
-    if (e.keyCode === 8 && inputAutoComplete.value === "") {
-        selectedListItems.pop();
-        renderSelectedElements(selectedListItems, 'autocomplete__selected-item', '.autocomplete__selected-list');
+    addElementOnClick(e) {
+        const clickedElementValue = e.target.dataset.value.trim();
+
+        const foundItems = this.selectedArray.filter(selectedElement => selectedElement === clickedElementValue);
+        if (foundItems.length === 0) {
+            this.selectedArray.push(clickedElementValue);
+        }
+
+        this.renderSelectedList(this.selectedArray);
+
+        this.input.value = "";
+        this.resultArray = [];
+
+        this.renderResultList(this.resultArray);
     }
 
-    // Set input value to selected element
-    const selectedElement = document.querySelector('.selected');
-    if (selectedElement) inputAutoComplete.value = selectedElement.dataset.value;
-});
+    renderTitle() {
+        const titleTag = document.createElement("h1");
+        titleTag.classList.add('autocomplete__title');
+        titleTag.textContent = this.title;
+        this.wrapperSection.appendChild(titleTag);
+    }
 
-// Render items for selected list
-const renderSelectedElements = (listItems, liElementClass, ulElementClass) => {
-    const shouldCreateDeleteIcon = true;
-    renderElements(listItems, liElementClass, ulElementClass, shouldCreateDeleteIcon);
-}
+    handleInput() {
+        let inputValue = this.input.value;
+        this.resultArray = [];
+        this.resultArray.push(inputValue);
 
-const renderElements = (listItems, liElementClass, ulElementClass, shouldCreateDeleteIcon) => {
-    const ul = document.querySelector(ulElementClass);
-    ul.textContent = "";
-    listItems.forEach(listElement => {
-        const fragment = document.createDocumentFragment();
-        const li = document.createElement('li');
-        li.classList.add(liElementClass);
-        li.setAttribute('data-value', listElement);
-        li.innerHTML = listElement.replaceAll(" ", '&nbsp;');
-        if (shouldCreateDeleteIcon) {
+        this.mainArrayy.forEach((technology) => {
+            const technologyItem = technology.toLowerCase().replace(/\s/g, "");
+            const matchItems = technologyItem.match(escapeRegExp(inputValue.toLowerCase().replace(/\s/g, "")));
+            // If element does not match then match method returns null
+            if (matchItems !== null) {
+                this.resultArray.push(technology);
+            }
+        });
+
+        this.renderResultList(this.resultArray);
+
+        if (inputValue === "") {
+            this.resultArray = [];
+            this.ulListResult.textContent = "";
+        }
+
+        const resultItemsAutocomplete = this.ulListResult.querySelectorAll('.autocomplete__result-item');
+        if (resultItemsAutocomplete[0]) {
+            resultItemsAutocomplete[0].classList.add('selected');
+        }
+    }
+
+    renderSelectedList(selectedItems) {
+        this.ulListSelected.textContent = "";
+        selectedItems.forEach(selectedItems => {
+            const fragment = document.createDocumentFragment();
+            const li = document.createElement('li');
+            li.classList.add('autocomplete__selected-item');
             const span = document.createElement('span');
+
+            fragment.appendChild(li);
+            li.textContent = selectedItems;
+            li.setAttribute('data-value', selectedItems);
+            li.innerHTML = selectedItems.replaceAll(" ", '&nbsp;');
             span.classList.add('close-icon');
             li.appendChild(span);
-        }
-        fragment.appendChild(li);
-        ul.appendChild(fragment);
-    });
+            this.ulListSelected.appendChild(fragment);
+            this.ulListSelected.appendChild(li);
+        })
+    }
+
+    renderResultList(resultItems) {
+        this.ulListResult.textContent = "";
+        resultItems.forEach(resultItem => {
+            const fragment = document.createDocumentFragment();
+            const li = document.createElement('li');
+            li.classList.add('autocomplete__result-item');
+
+            fragment.appendChild(li);
+            li.textContent = resultItem;
+            li.setAttribute('data-value', resultItem);
+            li.innerHTML = resultItem.replaceAll(" ", '&nbsp;');
+            this.ulListResult.appendChild(fragment);
+            this.ulListResult.appendChild(li);
+            this.inputWrapper.appendChild(this.ulListResult);
+        })
+    }
 }
 
-setTimeout(() => {
-    const loading = document.querySelector('.on-loading');
-    loading.classList.remove('on-loading');
-}, 800);
+onLoad();
+
+new Autocomplete(technologies, "Technologies");
+new Autocomplete(names, "Names");
+new Autocomplete(animals, "Animals");
