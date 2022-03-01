@@ -32,7 +32,7 @@ class Autocomplete {
         this.ulListResult = ulListResult;
         this.ulListSelected = ulListSelected;
 
-        this.placeholder = 'Insert';
+        this.placeholder = `Search for ${this.title.toLowerCase()}`;
         this.input.placeholder = this.placeholder;
 
         this.pointer = 0;
@@ -50,6 +50,10 @@ class Autocomplete {
 
     eventsHandlers() {
         this.input.addEventListener('input', this.inputTyping);
+        this.input.addEventListener('keydown', (e) => {
+            this.handleKeys(e)
+        });
+
         this.ulListResult.addEventListener('click', (e) => {
             if (e.target) {
                 this.addElementOnClick(e);
@@ -63,12 +67,12 @@ class Autocomplete {
         });
 
         this.wrapperSection.addEventListener('mouseleave', () => {
-            // this.closeResultList();
+            this.closeResultList();
         });
     }
 
     renderHtml() {
-        this.updateTitle();
+        this.renderTitle();
 
         container.appendChild(this.wrapperSection);
         container.appendChild(this.inputWrapper);
@@ -83,7 +87,7 @@ class Autocomplete {
     }
 
     closeResultList() {
-        this.input.value = '';
+        this.input.value = "";
         this.input.placeholder = this.placeholder;
 
         this.resultArray = [];
@@ -194,12 +198,11 @@ class Autocomplete {
     handleInput() {
         let inputValue = this.input.value;
         this.resultArray = [];
-
         this.resultArray.push(inputValue);
 
         this.mainArrayy.forEach((technology) => {
             const technologyItem = technology.toLowerCase().replace(/\s/g, "");
-            const matchItems = technologyItem.match(escapeRegExp(inputValue.toLowerCase().replace(/\s/g, '')));
+            const matchItems = technologyItem.match(escapeRegExp(inputValue.toLowerCase().replace(/\s/g, "")));
             // If element does not match then match method returns null
             if (matchItems !== null) {
                 this.resultArray.push(technology);
@@ -208,9 +211,9 @@ class Autocomplete {
 
         this.renderResultArray(this.resultArray);
 
-        if (inputValue === '') {
+        if (inputValue === "") {
             this.resultArray = [];
-            this.ulListResult.textContent = '';
+            this.ulListResult.textContent = "";
         }
 
         const resultItemsAutocomplete = this.ulListResult.querySelectorAll('.autocomplete__result-item');
